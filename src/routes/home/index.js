@@ -2,12 +2,13 @@ import { h, Component } from 'preact';
 import style from './style';
 
 export default class Home extends Component {
-	render() {
-		return (
-			<div class={style.home}>
-				<h1>Home</h1>
-				<p>This is the Home component.</p>
-			</div>
-		);
-	}
+
+  render() {
+    return (
+      <div class={style['home'] + ' margin-top'}>
+        <h1 class="title">Home</h1>
+        <p class="sub-title">ride, rode, ridden and again</p>
+      </div>
+    )
+  }
 }

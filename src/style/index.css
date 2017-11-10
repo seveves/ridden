@@ -17,4 +17,22 @@ html, body {
 
 #app {
 	height: 100%;
+	padding: 1rem;
+}
+
+#app .margin-top {
+	margin-top: 50px;
+}
+
+#app h1.title {
+	font-weight: lighter;
+	margin-bottom: 0;
+	padding: 0;
+}
+
+#app p.sub-title {
+	font-weight: lighter;
+	margin: 0;
+	margin-bottom: 1rem;
+	padding: 0;
 }
