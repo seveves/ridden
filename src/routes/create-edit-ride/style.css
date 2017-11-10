@@ -1,3 +1,36 @@
 .create-edit-ride {
   
 }
+
+.create-edit-ride form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-edit-ride form label {
+  font-size: .8rem;
+  text-transform: lowercase;
+}
+
+.create-edit-ride form textarea {
+  resize: none;
+}
+
+
+.create-edit-ride form div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.create-edit-ride form input[type="submit"] {
+  background-color: rgb(6, 110, 110);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  align-self: flex-end;
+}

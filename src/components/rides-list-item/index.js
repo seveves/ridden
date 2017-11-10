@@ -3,7 +3,13 @@ import style from './style';
 
 export default class RidesListItem extends Component {
 
-	render({ ride }) {
+ onDeleteClick = e => {
+	 e.stopPropagation();
+	 e.preventDefault();
+	 this.props.onDelete(this.props.ride.id);
+ }
+
+	render({ ride, onDelete }) {
 		return (
 			<a href={'/details/' + ride.id} class={style['rides-list-item-link']}>
 				<div class={style['rides-list-item']}>
@@ -13,6 +19,10 @@ export default class RidesListItem extends Component {
 						<span>/</span>
 						<span class={style.available}>{ride.seats.available}</span>
 					</div>
+					{ onDelete ?
+						<div class={style.bin}>
+							<span onClick={this.onDeleteClick}>🗑️</span>
+						</div> : null }
 					<div class={style.arrow}>
 						<span>&rsaquo;</span>
 					</div>

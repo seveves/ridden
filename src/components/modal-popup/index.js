@@ -2,12 +2,12 @@ import { h, Component } from 'preact';
 import style from './style';
 
 export default class ModalPopup extends Component {
-  render({ children }) {
+  render({ children, onClose }) {
     return (
-      <div class={style.modal}>
+      <div class={style.modal} onClick={onClose}>
 
-        <div class={stlyle['modal-content']}>
-          <span class={style.close}>&times;</span>
+        <div class={style['modal-content']} onClick={(e) => e.stopPropagation()}>
+          <span class={style.close} onClick={onClose}>&times;</span>
           <div>{this.props.children}</div>
         </div>
 

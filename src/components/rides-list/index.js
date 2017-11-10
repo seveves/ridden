@@ -5,11 +5,11 @@ import RidesListItem from '../../components/rides-list-item';
 
 export default class RidesList extends Component {
 
-	render({ rides }) {
+	render({ rides, onDelete }) {
 		return (
 			<div class={style['rides-list']}>
 				{ rides ? rides.map((ride) => (
-					<RidesListItem key={ride.id} ride={ride} />
+					<RidesListItem key={ride.id} ride={ride} onDelete={onDelete} />
 				)) : null }
 				{ (!rides)
 						? <p class={style['no-rides']}>Loading ⏳</p>

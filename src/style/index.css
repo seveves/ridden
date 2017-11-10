@@ -3,10 +3,10 @@ html, body {
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	background: #FAFAFA;
+	background: #FDFDF5;
 	font-family: 'Helvetica Neue', arial, sans-serif;
 	font-weight: 400;
-	color: #444;
+	color: black;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -16,8 +16,8 @@ html, body {
 }
 
 #app {
-	height: 100%;
 	padding: 1rem;
+	padding-bottom: 100px;
 }
 
 #app .margin-top {
@@ -35,4 +35,37 @@ html, body {
 	margin: 0;
 	margin-bottom: 1rem;
 	padding: 0;
+}
+
+.fab-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+}
+
+.fab-container button,
+.fab-container a {
+  background-color: rgb(6, 110, 110);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.fab-container button,
+.fab-container a {
+  border-right: 1px solid white;
+}
+
+.fab-container button:last-child,
+.fab-container a:last-child {
+  border-right: 0;
 }

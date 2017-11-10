@@ -33,6 +33,11 @@
   font-weight: lighter;
 }
 
+.rides-list-item .bin {
+  font-size: 1.5rem;
+  padding-right: 1rem;
+}
+
 .rides-list-item .seats .left {
   font-size: 2rem;
 }
