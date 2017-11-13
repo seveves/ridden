@@ -1,15 +1,15 @@
-.ride-details {
+.shuttle-details {
 }
 
-.ride-details h3 {
+.shuttle-details h3 {
   margin-bottom: .1rem;
   font-size: 1rem;
 }
 
-.ride-details p {
+.shuttle-details p {
   margin-bottom: 0;
 }
 
-.ride-details .desc {
+.shuttle-details .desc {
   margin-top: 0;
 }

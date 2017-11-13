@@ -3,7 +3,7 @@ import style from './style';
 
 const API_ORIGIN = 'http://192.168.0.185:3000';
 
-export default class CreateEditRide extends Component {
+export default class CreateEditShuttle extends Component {
 
   state = {
     title: '',

@@ -14,8 +14,9 @@ export default class Header extends Component {
 				{ authed
 					? (
 							<nav>	
-								<Link activeClassName={style.active} href="/rides">rides</Link>
-								<Link activeClassName={style.active} href="/find-rides">find</Link>
+								<Link activeClassName={style.active} href="/hops">rides</Link>
+								<Link activeClassName={style.active} href="/shuttles">shuttles</Link>
+								<Link activeClassName={style.active} href="/rides">find</Link>
 							</nav>	
 						)
 					: (

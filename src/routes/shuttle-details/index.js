@@ -6,7 +6,7 @@ import ModalPopup from '../../components/modal-popup';
 
 const API_ORIGIN = 'http://192.168.0.185:3000';
 
-export default class RideDetails extends Component {
+export default class ShuttleDetails extends Component {
 
 	state = { ride: undefined, showHopOff: false, showHopOn: false };
 
@@ -31,7 +31,7 @@ export default class RideDetails extends Component {
 	render({ id }, { ride, showHopOn, showHopOff }) {
 		if (ride) {
 			return (
-				<div class={style['ride-details'] + ' margin-top'}>
+				<div class={style['shuttle-details'] + ' margin-top'}>
 					<h1 class="title">{ride.title}</h1>
 					<p class="sub-title">Starting on {new Date(ride.starting_at).toLocaleTimeString()} at {new Date(ride.starting_at).toLocaleDateString()}</p>
 					<h3>description</h3>

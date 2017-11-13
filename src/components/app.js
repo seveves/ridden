@@ -6,9 +6,10 @@ import Header from './header';
 import Home from '../routes/home';
 import Login from '../routes/login';
 import Rides from '../routes/rides';
-import FindRides from '../routes/find-rides';
-import RideDetails from '../routes/ride-details';
-import CreateEditRide from '../routes/create-edit-ride';
+import Hops from '../routes/hops';
+import Shuttles from '../routes/shuttles';
+import ShuttleDetails from '../routes/shuttle-details';
+import CreateEditShuttle from '../routes/create-edit-shuttle';
 
 export default class App extends Component {
 
@@ -29,11 +30,12 @@ export default class App extends Component {
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
 					<Login path="/login" />
+					<Hops path="/hops" />
 					<Rides path="/rides" />
-					<FindRides path="/find-rides" />
-					<RideDetails path="/details/:id" />
-					<CreateEditRide path="/create" />
-					<CreateEditRide path="/edit/:id" />
+					<Shuttles path="/shuttles/" />
+					<ShuttleDetails path="/shuttles/details/:id" />
+					<CreateEditShuttle path="/shuttle/create" />
+					<CreateEditShuttle path="/shuttle/edit/:id" />
 				</Router>
 			</div>
 		);
