@@ -1,44 +1,27 @@
 import { h, Component } from 'preact';
 import style from './style';
-import RidesList from '../../components/rides-list';
+import { get } from '../../api';
 
-const API_ORIGIN = 'http://192.168.0.185:3000';
+import RidesList from '../../components/rides-list';
 
 export default class Hops extends Component {
 
-	state = { rides: null };
-	
-	loadRides() {
-		fetch(`${API_ORIGIN}/rides`)
-			.then(r => r.json())
-			.then(rides => this.setState({ rides }));
-	}
+	state = { hops: null };
 	
 	componentDidMount() {
-		this.loadRides();
+		get('hop')
+			.then(res => res.data)
+			.then(hops => {
+				this.setState({ hops });
+			});
 	}
 
-	deleteRide = id => {
-		if (confirm('delete this ride?')) {
-			const headers = new Headers({ 'Content-Type': 'application/json' });
-			const postInit = {
-				method: 'DELETE',
-				headers
-			};
-			fetch(`${API_ORIGIN}/rides/` + id, postInit)
-				.then(() => this.loadRides());
-		}
-	}
-
-	render({ }, { rides }) {
+	render({ }, { hops }) {
 		return (
 			<div class={style.rides}>
-				<h1 class="title margin-top">rides</h1>
-				<p class="sub-title">showing all available rides</p>
-				<RidesList rides={rides} onDelete={this.deleteRide}/>
-				<div class="fab-container"> 
-					<a href="/create">create</a>
-				</div>
+				<h1 class="title margin-top">upcoming shuttle rides</h1>
+				<p class="sub-title">showing your next shuttle rides. yeaha!</p>
+				<RidesList rides={hops} />
 			</div>
 		);
 	}

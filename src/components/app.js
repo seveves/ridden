@@ -1,5 +1,10 @@
 import { h, Component } from 'preact';
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
+import { createHashHistory } from 'history';
+
+import { bus } from '../utils';
+import { getUser } from '../utils/local';
+import { getRoles } from '../api';
 
 import Header from './header';
 
@@ -11,31 +16,70 @@ import Shuttles from '../routes/shuttles';
 import ShuttleDetails from '../routes/shuttle-details';
 import CreateEditShuttle from '../routes/create-edit-shuttle';
 
+const history = createHashHistory();
+
+const noAuth = ['/login'];
+const toAuth = ['/hops', '/rides', '/shuttles', '/shuttles/details', '/shuttles/create', '/shuttles/edit'];
+const showBack = ['/shuttles/details', '/shuttles/create', '/shuttles/edit']
+
+function nextUrl(uri, isUser) {
+  let paths = uri.split('/');
+	let path = '/' + paths[1];
+	if (paths.length > 2) {
+		path = path.concat('/', paths[2]);
+	}
+  if (isUser && noAuth.indexOf(path) !== -1) return '/';
+  if (!isUser && toAuth.indexOf(path) !== -1) return noAuth[0];
+  return uri;
+}
+
+function showBackButton(uri) {
+	let paths = uri.split('/');
+	let path = '/' + paths[1];
+	if (paths.length > 2) {
+		path = path.concat('/', paths[2]);
+	}
+	return showBack.indexOf(path) !== -1;
+}
+
 export default class App extends Component {
 
-	state = { showBack: false, authed: true };
+	state = { showBack: false, user: getUser() };
 
 	handleRoute = e => {
-		this.currentUrl = e.url;
-		this.setState({
-			showBack: e.url.startsWith('/details') ||
-								e.url.startsWith('/create') ||
-								e.url.startsWith('/edit') });
+		const currentUrl = e.url;
+		this.setState({ showBack: showBackButton(currentUrl) });
+		const next = nextUrl(currentUrl, !!this.state.user);
+		if (next !== currentUrl) {
+			return route(next, true);
+		}
 	};
 
-	render({ }, { showBack, authed }) {
+	componentDidMount() {
+		bus.on('auth:change', obj => {
+			if (obj) {
+				getRoles(obj.id).then(roles => {
+					this.setState({ user: { ...obj, roles }}, () => route('/'));
+				})
+			} else {
+				this.setState({ user: obj }, () => route(noAuth[0]));
+			}
+		});
+	}
+
+	render({ }, { showBack, user }) {
 		return (
 			<div id="app">
-				<Header showBack={showBack} authed={authed}/>
-				<Router onChange={this.handleRoute}>
+				<Header showBack={showBack} user={user}/>
+				<Router history={history} onChange={this.handleRoute}>
 					<Home path="/" />
 					<Login path="/login" />
 					<Hops path="/hops" />
 					<Rides path="/rides" />
-					<Shuttles path="/shuttles/" />
+					<Shuttles path="/shuttles" />
 					<ShuttleDetails path="/shuttles/details/:id" />
-					<CreateEditShuttle path="/shuttle/create" />
-					<CreateEditShuttle path="/shuttle/edit/:id" />
+					<CreateEditShuttle path="/shuttles/create" />
+					<CreateEditShuttle path="/shuttles/edit/:id" />
 				</Router>
 			</div>
 		);

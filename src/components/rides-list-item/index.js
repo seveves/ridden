@@ -11,7 +11,7 @@ export default class RidesListItem extends Component {
 
 	render({ ride, onDelete }) {
 		return (
-			<a href={'/details/' + ride.id} class={style['rides-list-item-link']}>
+			<a href={'/shuttles/details/' + ride.id} class={style['rides-list-item-link']}>
 				<div class={style['rides-list-item']}>
 					<div class={style.title}>{ride.title}</div>
 					<div class={style.seats}>

@@ -1,41 +1,34 @@
 import { h, Component } from 'preact';
 import style from './style';
+import { get } from '../../api';
 
 import RidesList from '../../components/rides-list';
 import DistancePicker from '../../components/distance-picker';
 
-import * as geo from '../../utils/geo';
-
-const API_ORIGIN = 'http://192.168.0.185:3000';
-
 export default class Rides extends Component {
 
-	state = { rides: null, distance: 100, position: {} };
+	state = { rides: null, distance: 100, lat: 48.596603, lon: 9.414554 };
 	
-	locateRides(position, distance) {
-    this.setState({ rides: null });
-    fetch(`${API_ORIGIN}/rides`)
-      .then(r => r.json())
-      .then(rides => rides.filter(ride => distance >= geo.getDistanceBetweenInKm(
-				ride.location,
-				{ lat: position.coords.latitude, long: position.coords.longitude })))
-			.then(rides => {
-        this.setState({ rides, position: {
-          coords: { latitude: position.coords.latitude, longitude: position.coords.longitude }}, distance });
-      });
+	findRides(lat, lon, distance) {
+		const param = `?near=${distance || state.distance}:${lat || state.lat}:${lon || state.lon}`;
+		get('rides' + param).then(res => res.data).then(rides => {
+			this.setState({ rides, lat, lon, distance	});
+		});
 	}
 	
 	componentDidMount() {
 		const distance = this.state.distance;
-		navigator.geolocation.getCurrentPosition((position) => this.locateRides(position, distance))
+		navigator.geolocation.getCurrentPosition((position) => {
+			this.findRides(position.coords.latitude, position.coords.longitude, distance);
+		});
 	}
 
-	render({ }, { rides, distance, position }) {
+	render({ }, { rides, lat, lon }) {
 		return (
 			<div class={style['locate-rides']}>
 				<h1 class="title margin-top">locate rides near you</h1>
 				<p class="sub-title">showing rides near you</p>
-				<DistancePicker onUpdateDistance={(update) => this.locateRides(position, update)} />
+				<DistancePicker onUpdateDistance={(distance) => this.findRides(lat, lon, distance)} />
 				<RidesList rides={rides} />
 			</div>
 		);
