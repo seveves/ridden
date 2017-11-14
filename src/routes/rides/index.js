@@ -26,7 +26,7 @@ export default class Rides extends Component {
 	render({ }, { rides, lat, lon }) {
 		return (
 			<div class={style['locate-rides']}>
-				<h1 class="title margin-top">locate rides near you</h1>
+				<h1 class="title margin-top">find</h1>
 				<p class="sub-title">showing rides near you</p>
 				<DistancePicker onUpdateDistance={(distance) => this.findRides(lat, lon, distance)} />
 				<RidesList rides={rides} />

@@ -23,15 +23,21 @@ export default class Login extends Component {
   render({ }, { loading, errors }) {
     return (
       <div class={style.login + ' margin-top'}>
-        <h1 class="title">Login</h1>
-        <p class="sub-title">login or logout. that's the question</p>
+        <h1 class="title">login</h1>
+        <p class="sub-title">login or logout. that is le question</p>
         <ul class="error-messages">
           { errors.map(str => <li>{str}</li>) }
         </ul>
         <form onsubmit={this.onSubmit}>
-          <input name="email" type="email" placeholder="Email" disabled={loading} />
-          <input name="password" type="password" placeholder="Password" disabled={loading} />
-          <button disabled={loading}>Log in</button>
+          <div class={style['form-group']}>
+            <input name="email" type="email" placeholder="Email" disabled={loading} />
+          </div>
+          <div class={style['form-group']}>
+            <input name="password" type="password" placeholder="Password" disabled={loading} />
+          </div>
+          <div class={style['form-group']}>
+            <button disabled={loading}>Log in</button>
+          </div>
         </form>
       </div>
     )

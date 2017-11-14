@@ -57,13 +57,7 @@ export default class App extends Component {
 
 	componentDidMount() {
 		bus.on('auth:change', obj => {
-			if (obj) {
-				getRoles(obj.id).then(roles => {
-					this.setState({ user: { ...obj, roles }}, () => route('/'));
-				})
-			} else {
-				this.setState({ user: obj }, () => route(noAuth[0]));
-			}
+			this.setState({ user: obj}, () => obj ? route('/') : route(noAuth[0]));
 		});
 	}
 
@@ -71,16 +65,18 @@ export default class App extends Component {
 		return (
 			<div id="app">
 				<Header showBack={showBack} user={user}/>
-				<Router history={history} onChange={this.handleRoute}>
-					<Home path="/" />
-					<Login path="/login" />
-					<Hops path="/hops" />
-					<Rides path="/rides" />
-					<Shuttles path="/shuttles" />
-					<ShuttleDetails path="/shuttles/details/:id" />
-					<CreateEditShuttle path="/shuttles/create" />
-					<CreateEditShuttle path="/shuttles/edit/:id" />
-				</Router>
+				<div class="container">
+					<Router history={history} onChange={this.handleRoute}>
+						<Home path="/" />
+						<Login path="/login" />
+						<Hops path="/hops" />
+						<Rides path="/rides" />
+						<Shuttles path="/shuttles" />
+						<ShuttleDetails path="/shuttles/details/:id" />
+						<CreateEditShuttle path="/shuttles/create" />
+						<CreateEditShuttle path="/shuttles/edit/:id" />
+					</Router>
+				</div>
 			</div>
 		);
 	}

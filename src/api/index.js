@@ -13,7 +13,7 @@ function handle(r) {
 function send(method, uri, data, opts) {
   opts = opts || {};
   opts.method = method;
-  opts.headers = headers();
+  opts.headers = headers(opts || {});
   data && (opts.body = JSON.stringify(data));
   return fetch(`${API}/${uri}`, opts).then(handle);
 }
@@ -27,10 +27,18 @@ export const del = send.bind(null, 'delete');
 export function login(data) {
   data.user.strategy = 'local';
   return post('authentication', data.user)
-    .then(res => ({ user: { ...data.user, id: jwtDecode(res.accessToken).userId }, accessToken: res.accessToken }))
+    .then(res => ({ id: jwtDecode(res.accessToken).userId, accessToken: res.accessToken }))
+    .then(info => {
+      const opts = {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Accept': 'application/json, text/plain, */*',
+          'Authorization': `Bearer ${info.accessToken}`
+        }
+      };
+      return fetch(`${API}/users/${info.id}`, opts)
+              .then(handle)
+              .then(user => ({ user: user, accessToken: info.accessToken }));
+    })
     .then(info => _login(info.accessToken, info.user));
-}
-
-export function getRoles(userId) {
-  return get('users/' + userId).then(user => user.roles);
 }

@@ -19,7 +19,7 @@ export default class Hops extends Component {
 	render({ }, { hops }) {
 		return (
 			<div class={style.rides}>
-				<h1 class="title margin-top">upcoming shuttle rides</h1>
+				<h1 class="title margin-top">rides</h1>
 				<p class="sub-title">showing your next shuttle rides. yeaha!</p>
 				<RidesList rides={hops} />
 			</div>

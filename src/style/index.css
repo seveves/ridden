@@ -20,8 +20,27 @@ html, body {
 	padding-bottom: 100px;
 }
 
+.container {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+@media(min-width: 615px) {
+	.container {
+		margin-left: 4rem;
+		margin-right: 4rem;
+	}
+}
+
+@media(min-width: 870px) {
+	.container {
+		margin-left: 10rem;
+		margin-right: 10rem;
+	}
+}
+
 #app .margin-top {
-	margin-top: 50px;
+	margin-top: 60px;
 }
 
 #app h1.title {
@@ -58,6 +77,8 @@ html, body {
 	flex: 1;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
 }
 
 .fab-container button,
@@ -68,4 +89,10 @@ html, body {
 .fab-container button:last-child,
 .fab-container a:last-child {
   border-right: 0;
+}
+
+.fab-container button:disabled,
+.fab-container a:disabled {
+	opacity: .5;
+	cursor: not-allowed;
 }

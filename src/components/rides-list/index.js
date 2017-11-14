@@ -9,7 +9,7 @@ export default class RidesList extends Component {
 		return (
 			<div class={style['rides-list']}>
 				{ rides ? rides.map((ride) => (
-					<RidesListItem key={ride.id} ride={ride} onDelete={onDelete} />
+					<RidesListItem ride={ride} onDelete={onDelete} />
 				)) : null }
 				{ (!rides)
 						? <p class={style['no-rides']}>Loading ⏳</p>

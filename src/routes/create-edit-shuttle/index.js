@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import style from './style';
-import { get, post, patch } from '../../api';
+import { get, post, put } from '../../api';
 
 export default class CreateEditShuttle extends Component {
 
@@ -26,7 +26,7 @@ export default class CreateEditShuttle extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.props.id) {
-      patch('shuttles/' + this.props.id, this.state).then(() => history.back());
+      put('shuttles/' + this.props.id, this.state).then(() => history.back());
     } else {
       post('shuttles', this.state).then(() => history.back());
     }
@@ -35,7 +35,6 @@ export default class CreateEditShuttle extends Component {
   componentDidMount() {
     if (this.props.id) {
       get('shuttles/' + this.props.id)
-        .then(res => res.data)
         .then(shuttle => {
           this.setState({
             title: shuttle.title,
