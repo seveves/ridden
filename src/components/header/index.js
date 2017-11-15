@@ -18,16 +18,16 @@ export default class Header extends Component {
 				{ user
 						? (
 								<nav>	
-									<Link activeClassName={style.active} href="/hops">🚴</Link>
-									{ isCompany ? <Link activeClassName={style.active} href="/shuttles">🚐</Link> : null }
-									<Link activeClassName={style.active} href="/rides">🔎</Link>
+									<Link activeClassName={style.active} href="/app/hops">🚴</Link>
+									{ isCompany ? <Link activeClassName={style.active} href="/app/shuttles">🚐</Link> : null }
+									<Link activeClassName={style.active} href="/app/rides">🔎</Link>
 									|
-									<a href="/login" onClick={this.logout}>🔒</a>	
+									<a href="/app/login" onClick={this.logout}>🔒</a>	
 								</nav>	
 							)
 						: (
 								<nav>
-									<Link activeClassName={style.active} href="/login">🔑</Link>
+									<Link activeClassName={style.active} href="/app/login">🔑</Link>
 								</nav>
 							)
 				}

@@ -1,36 +1,72 @@
 import { h, Component } from 'preact';
 import Portal from 'preact-portal';
 import style from './style';
-import { get } from '../../api';
+import { get, post, del } from '../../api';
 
 import ModalPopup from '../../components/modal-popup';
 
 export default class ShuttleDetails extends Component {
 
-	state = { ride: null, showHopOff: false, showHopOn: false, onThisRide: false };
+	state = {
+		ride: null,
+		showHopOff: false,
+		showHopOn: false,
+		onThisRide: false,
+		shuttleId: null,
+		seatsTaken: 0,
+	};
 
-	loadRide(id) {
+	loadRide(id, userId) {
 		get('shuttles/' + id)
 			.then(ride => {
-				this.setState({ ride }, () => this.isOnThisRide(ride));
+				this.setState({ ride }, () => this.isOnThisRide(ride, userId));
 			});
 	}
 
-	isOnThisRide(ride) {
-		return get('hop?shuttleId=' + ride._id).then(res => res.data).then(hops => {
-			this.setState({ onThisRide: hops.length > 0 });
+	isOnThisRide(ride, userId) {
+	  get('hop?shuttleId=' + ride._id).then(res => res.data).then(hops => {
+			const hopIndex = hops.findIndex(hop => hop.userId === userId);	
+			this.setState({
+				onThisRide: hopIndex !== -1,
+				seatsTaken: hops.length,
+				shuttleId: hopIndex !== -1 ? hops[hopIndex]._id : null
+			});
 		});
 	}
 
-	hopOn = () => this.setState({ showHopOn: true });
-	hopOff = () => this.setState({ showHopOff: true });
-	close = () => this.setState({ showHopOff: false, showHopOn: false });
-
-	componentDidMount() {
-		this.loadRide(this.props.id);
+	hopOnModal = ev => {
+		ev.preventDefault();
+		this.setState({ showHopOn: true });
+	};
+		
+	hopOffModal = ev => {
+		ev.preventDefault();
+		this.setState({ showHopOff: true });
+	};
+		
+	closeModal = ev => {
+		ev.preventDefault();
+		this.setState({ showHopOff: false, showHopOn: false });
+	};
+		
+	hopOn() {
+		this.setState({ showHopOff: false, showHopOn: false });
+		post('hop', { shuttleId: this.props.id })
+			.then(() => this.loadRide(this.props.id, this.props.user._id));
 	}
 
-	render({ id }, { ride, showHopOn, showHopOff, onThisRide }) {
+	hopOff() {
+		this.setState({ showHopOff: false, showHopOn: false });
+		del('hop/' + this.state.shuttleId)
+			.then(() => this.loadRide(this.props.id, this.props.user._id));
+	}
+
+	componentDidMount() {
+		this.loadRide(this.props.id, this.props.user._id);
+	}
+
+	render({ id, user }, { ride, showHopOn, showHopOff, onThisRide, seatsTaken }) {
+		let isCompany = user.roles && user.roles.indexOf('company') !== -1;
 		return (
 			<div>
 				{ ride
@@ -40,27 +76,31 @@ export default class ShuttleDetails extends Component {
 							<h3>description</h3>
 							<p class={style['desc']}>{ride.description}</p>
 							<h3>available seats</h3>
-							<p class={style['desc']}>{ride.leftSeats} of {ride.availableSeats}</p>
+							<p class={style['desc']}>{seatsTaken} of {ride.availableSeats}</p>
 							<div class="fab-container"> 
 								{ onThisRide
-										? <button onClick={() => this.hopOff(ride)}>Hop off</button>
-										: <button onClick={() => this.hopOn(ride)} disabled={ride.leftSeats >= ride.availableSeats}>Hop on</button>}
+										? <button onClick={this.hopOffModal}>Hop off</button>
+										: <button onClick={this.hopOnModal} disabled={ride.seatsTaken >= ride.availableSeats}>Hop on</button>}
 								<a href={`https://www.google.com/maps/dir/?api=1&destination=${ride.lat},${ride.lon}`}>Navigate</a>
-								<a href={'/shuttles/edit/' + id}>Edit</a>
+								{ isCompany ? <a href={'/app/shuttles/edit/' + id}>Edit</a> : null }
 							</div>
 
 							{ showHopOn ? (
 								<Portal into="body">
-									<ModalPopup onClose={this.close}>
+									<ModalPopup onClose={this.closeModal}>
 										<h1>Hop on</h1>
+										<p>Be part of this ride</p>
+										<button onClick={() => this.hopOn()}>Get on this ride!</button>
 									</ModalPopup>
 								</Portal>
 							) : null }
 							
 							{ showHopOff ? (
 								<Portal into="body">
-									<ModalPopup onClose={this.close}>
+									<ModalPopup onClose={this.closeModal}>
 										<h1>Hop off</h1>
+										<p>Can't make it anymore? Poor you.</p>
+										<button onClick={() => this.hopOff()}>Get off this ride!</button>
 									</ModalPopup>
 								</Portal>
 							) : null }

@@ -12,11 +12,14 @@ export default class Hops extends Component {
 		get('hop')
 			.then(res => res.data)
 			.then(hops => {
-				this.setState({ hops });
+				this.setState({
+					hops: hops.filter(hop => hop['shuttle'] && hop.userId === this.props.user._id)
+										.map(hop => hop.shuttle),
+				});
 			});
 	}
 
-	render({ }, { hops }) {
+	render({ user }, { hops }) {
 		return (
 			<div class={style.rides}>
 				<h1 class="title margin-top">rides</h1>

@@ -3,7 +3,7 @@ import { headers } from './auth';
 import { login as _login } from './auth';
 import jwtDecode from 'jwt-decode';
 
-const API= 'http://localhost:3030';
+const API = API_URL;
 
 function handle(r) {
   let act = r.ok ? 'resolve' : 'reject';

@@ -33,7 +33,7 @@ export default class Shuttles extends Component {
 				<p class="sub-title">you are organizing these trips. nice!</p>
 				<RidesList rides={shuttles} onDelete={this.deleteShuttle}/>
 				<div class="fab-container"> 
-					<a href="/shuttles/create">create</a>
+					<a href="/app/shuttles/create">create</a>
 				</div>
 			</div>
 		);
