@@ -4,11 +4,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
-    "build": "cross-env NODE_ENV=production preact build",
-    "serve": "preact build && preact serve",
+    "start": "npm run serve",
+    "build": "preact build",
+    "serve": "serve ./build --single",
     "dev": "preact watch",
     "lint": "eslint src"
+  },
+  "now": {
+    "env": {
+      "API_URL": "@apiurl"
+    }
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor"
@@ -17,13 +22,13 @@
     "build/*"
   ],
   "devDependencies": {
-    "cross-env": "^5.1.1",
     "eslint": "^4.5.0",
     "eslint-config-synacor": "^1.1.0",
     "if-env": "^1.0.0",
     "preact-cli": "^2.0.0"
   },
   "dependencies": {
+    "serve": "^6.4.1",
     "jwt-decode": "^2.2.0",
     "mitt": "^1.1.2",
     "preact": "^8.2.1",
