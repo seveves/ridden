@@ -1,35 +1,36 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 import style from './style';
-import { logout } from '../../api/auth';
+import { logout } from '../../api/index';
 
 export default class Header extends Component {
 
 	logout = logout;
 
-	render({ showBack, user }) {
-		let isCompany = user.roles && user.roles.indexOf('company') !== -1;
+	navigateBack = () => {
+		history.back();
+	}
+
+	render({ user }) {
+		const isVendor = user.roles && user.roles.indexOf('vendor') !== -1;
 		return (
 			<header class={style.header}>
-				{ showBack && user
-						? <h1 onClick={() => history.back()}>&lsaquo; back</h1>
-						: <h1><a href="/">ridden</a></h1>
-				}
+				<h1><a href="/">ridden</a></h1>
 				{ user
-						? (
-								<nav>	
-									<Link activeClassName={style.active} href="/app/hops">🚴</Link>
-									{ isCompany ? <Link activeClassName={style.active} href="/app/shuttles">🚐</Link> : null }
-									<Link activeClassName={style.active} href="/app/rides">🔎</Link>
-									|
-									<a href="/app/login" onClick={this.logout}>🔒</a>	
-								</nav>	
-							)
-						: (
-								<nav>
-									<Link activeClassName={style.active} href="/app/login">🔑</Link>
-								</nav>
-							)
+					? (
+						<nav>
+							<Link activeClassName={style.active} href="/">shuttles</Link>
+							<Link activeClassName={style.active} href="/bookings">bookings</Link>
+							{ isVendor ? <Link activeClassName={style.active} href="/shuttles">shuttle offers</Link> : null }
+							{ isVendor ? <Link activeClassName={style.active} href="/fleet">car fleet</Link> : null }
+							<Link activeClassName={style.active} href="/login" onClick={this.logout}>logout</Link>
+						</nav>
+					)
+					: (
+						<nav>
+							<Link activeClassName={style.active} href="/login">login</Link>
+						</nav>
+					)
 				}
 			</header>
 		);

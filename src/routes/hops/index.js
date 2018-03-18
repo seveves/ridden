@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import { get } from '../../api';
 
-import RidesList from '../../components/rides-list';
+import { RidesList } from '../../components/rides-list';
 
 export default class Hops extends Component {
 
@@ -11,11 +11,11 @@ export default class Hops extends Component {
 	componentDidMount() {
 		get('hop')
 			.then(res => res.data)
-			.then(hops => {
-				this.setState({
-					hops: hops.filter(hop => hop['shuttle'] && hop.userId === this.props.user._id)
-										.map(hop => hop.shuttle),
-				});
+			.then(data => {
+				const hops = data
+					.filter(hop => hop.shuttle && hop.userId === this.props.user._id)
+					.map(hop => hop.shuttle);
+				this.setState({ hops });
 			});
 	}
 

@@ -1,21 +1,20 @@
 import fetch from 'unfetch';
-import { headers } from './auth';
-import { login as _login } from './auth';
 import jwtDecode from 'jwt-decode';
+import { login as _login, logout as _logout, headers } from './auth';
 
 const API = API_URL;
 
 function handle(r) {
-  let act = r.ok ? 'resolve' : 'reject';
-  return r.json().then(data => Promise[act](data));
+	let act = r.ok ? 'resolve' : 'reject';
+	return r.json().then(data => Promise[act](data));
 }
 
 function send(method, uri, data, opts) {
-  opts = opts || {};
-  opts.method = method;
-  opts.headers = headers(opts || {});
-  data && (opts.body = JSON.stringify(data));
-  return fetch(`${API}/${uri}`, opts).then(handle);
+	opts = opts || {};
+	opts.method = method;
+	opts.headers = headers(opts || {});
+	data && (opts.body = JSON.stringify(data));
+	return fetch(`${API}/${uri}`, opts).then(handle);
 }
 
 export const get = send.bind(null, 'get');
@@ -24,21 +23,20 @@ export const patch = send.bind(null, 'patch');
 export const post = send.bind(null, 'post');
 export const del = send.bind(null, 'delete');
 
-export function login(data) {
-  data.user.strategy = 'local';
-  return post('authentication', data.user)
-    .then(res => ({ id: jwtDecode(res.accessToken).userId, accessToken: res.accessToken }))
-    .then(info => {
-      const opts = {
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Accept': 'application/json, text/plain, */*',
-          'Authorization': `Bearer ${info.accessToken}`
-        }
-      };
-      return fetch(`${API}/users/${info.id}`, opts)
-              .then(handle)
-              .then(user => ({ user: user, accessToken: info.accessToken }));
-    })
-    .then(info => _login(info.accessToken, info.user));
+export function login(token) {
+	const decoded = jwtDecode(token);
+	const opts = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json;charset=UTF-8',
+			Accept: 'application/json, text/plain, */*'
+		}
+	};
+	return fetch(`${API}/riders/${decoded.data.id}`, opts)
+		.then(handle)
+		.then(rider => _login(token, rider));
+}
+
+export function logout() {
+	return fetch(`${API}/logout`).then(() => _logout());
 }

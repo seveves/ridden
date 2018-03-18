@@ -1,21 +1,23 @@
 import { h, Component } from 'preact';
 import style from './style';
-import { get, post, del } from '../../api';
+import { get } from '../../api';
 
 export default class RidesListItem extends Component {
 
 	state = { seatsTaken: null };
 
- 	onDeleteClick = e => {
- 		e.stopPropagation();
-	 	e.preventDefault();
-	 	this.props.onDelete(this.props.ride._id);
- 	}
+	onDeleteClick = ev => {
+		ev.stopPropagation();
+		ev.preventDefault();
+		this.props.onDelete(this.props.ride._id);
+	}
 
-  componentDidMount() {
-		get('hop?shuttleId=' + this.props.ride._id).then(res => res.data).then(hops => {
-			this.setState({ seatsTaken: hops.length });
-		});
+	componentDidMount() {
+		get(`hop?shuttleId=${this.props.ride._id}`)
+			.then(res => res.data)
+			.then(hops => {
+				this.setState({ seatsTaken: hops.length });
+			});
 	}
 
 	render({ ride, onDelete }, { seatsTaken }) {

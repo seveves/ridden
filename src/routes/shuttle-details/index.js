@@ -13,7 +13,7 @@ export default class ShuttleDetails extends Component {
 		showHopOn: false,
 		onThisRide: false,
 		shuttleId: null,
-		seatsTaken: 0,
+		seatsTaken: 0
 	};
 
 	loadRide(id, userId) {
@@ -24,8 +24,8 @@ export default class ShuttleDetails extends Component {
 	}
 
 	isOnThisRide(ride, userId) {
-	  get('hop?shuttleId=' + ride._id).then(res => res.data).then(hops => {
-			const hopIndex = hops.findIndex(hop => hop.userId === userId);	
+		get('hop?shuttleId=' + ride._id).then(res => res.data).then(hops => {
+			const hopIndex = hops.findIndex(hop => hop.userId === userId);
 			this.setState({
 				onThisRide: hopIndex !== -1,
 				seatsTaken: hops.length,
@@ -66,48 +66,47 @@ export default class ShuttleDetails extends Component {
 	}
 
 	render({ id, user }, { ride, showHopOn, showHopOff, onThisRide, seatsTaken }) {
-		let isCompany = user.roles && user.roles.indexOf('company') !== -1;
+		const isCompany = user.roles && user.roles.indexOf('company') !== -1;
 		return (
 			<div>
-				{ ride
-					? <div class={style['shuttle-details'] + ' margin-top'}>
-							<h1 class="title">{ride.title}</h1>
-							<p class="sub-title">Starting on {new Date(ride.takingOff).toLocaleTimeString()} at {new Date(ride.takingOff).toLocaleDateString()}</p>
-							<h3>description</h3>
-							<p class={style['desc']}>{ride.description}</p>
-							<h3>available seats</h3>
-							<p class={style['desc']}>{seatsTaken} of {ride.availableSeats}</p>
-							<div class="fab-container"> 
-								{ onThisRide
-										? <button onClick={this.hopOffModal}>Hop off</button>
-										: <button onClick={this.hopOnModal} disabled={ride.seatsTaken >= ride.availableSeats}>Hop on</button>}
-								<a href={`https://www.google.com/maps/dir/?api=1&destination=${ride.lat},${ride.lon}`}>Navigate</a>
-								{ isCompany ? <a href={'/app/shuttles/edit/' + id}>Edit</a> : null }
-							</div>
-
-							{ showHopOn ? (
-								<Portal into="body">
-									<ModalPopup onClose={this.closeModal}>
-										<h1>Hop on</h1>
-										<p>Be part of this ride</p>
-										<button onClick={() => this.hopOn()}>Get on this ride!</button>
-									</ModalPopup>
-								</Portal>
-							) : null }
-							
-							{ showHopOff ? (
-								<Portal into="body">
-									<ModalPopup onClose={this.closeModal}>
-										<h1>Hop off</h1>
-										<p>Can't make it anymore? Poor you.</p>
-										<button onClick={() => this.hopOff()}>Get off this ride!</button>
-									</ModalPopup>
-								</Portal>
-							) : null }
+				{ ride!==null ?
+					<div class={style['shuttle-details'] + ' margin-top'}>
+						<h1 class="title">{ride.title}</h1>
+						<p class="sub-title">Starting on {new Date(ride.takingOff).toLocaleTimeString()} at {new Date(ride.takingOff).toLocaleDateString()}</p>
+						<h3>description</h3>
+						<p class={style.desc}>{ride.description}</p>
+						<h3>available seats</h3>
+						<p class={style.desc}>{seatsTaken} of {ride.availableSeats}</p>
+						<div class="fab-container">
+							{ onThisRide
+								? <button onClick={this.hopOffModal}>Hop off</button>
+								: <button onClick={this.hopOnModal} disabled={ride.seatsTaken >= ride.availableSeats}>Hop on</button>}
+							<a href={`https://www.google.com/maps/dir/?api=1&destination=${ride.lat},${ride.lon}`}>Navigate</a>
+							{ isCompany ? <a href={'/app/shuttles/edit/' + id}>Edit</a> : null }
 						</div>
-					: <div>Loading ...</div>
+
+						{ showHopOn ? (
+							<Portal into="body">
+								<ModalPopup onClose={this.closeModal}>
+									<h1>Hop on</h1>
+									<p>Be part of this ride</p>
+									<button onClick={this.hopOn}>Get on this ride!</button>
+								</ModalPopup>
+							</Portal>
+						) : null }
+							
+						{ showHopOff ? (
+							<Portal into="body">
+								<ModalPopup onClose={this.closeModal}>
+									<h1>Hop off</h1>
+									<p>Can't make it anymore? Poor you.</p>
+									<button onClick={this.hopOff}>Get off this ride!</button>
+								</ModalPopup>
+							</Portal>
+						) : null }
+					</div> : <div>Loading ...</div>
 				}
 			</div>
-		)
+		);
 	}
 }
