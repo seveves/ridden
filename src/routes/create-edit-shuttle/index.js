@@ -92,7 +92,7 @@ export default class CreateEditShuttleOffer extends Component {
 								},
 								location: shuttle.location
 						});
-					});
+					});	
 				});
 		} else {
 			get(`vendors/${this.props.user.vendorId}/cars`)
