@@ -1,0 +1,15 @@
+.fleet-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+@media (max-width: 960px) {
+  .fleet-container {
+    flex-direction: column;
+  }
+}
+
+.fleet-cars-list {
+  flex: 1;
+}

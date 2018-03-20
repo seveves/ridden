@@ -11,8 +11,7 @@ export default class Header extends Component {
 		history.back();
 	}
 
-	render({ user }) {
-		const isVendor = user.roles && user.roles.indexOf('vendor') !== -1;
+	render({ user, isVendor }) {
 		return (
 			<header class={style.header}>
 				<h1><a href="/">ridden</a></h1>
@@ -21,7 +20,7 @@ export default class Header extends Component {
 						<nav>
 							<Link activeClassName={style.active} href="/">shuttles</Link>
 							<Link activeClassName={style.active} href="/bookings">bookings</Link>
-							{ isVendor ? <Link activeClassName={style.active} href="/shuttles">shuttle offers</Link> : null }
+							{ isVendor ? <Link activeClassName={style.active} href="/offers">shuttle offers</Link> : null }
 							{ isVendor ? <Link activeClassName={style.active} href="/fleet">car fleet</Link> : null }
 							<Link activeClassName={style.active} href="/login" onClick={this.logout}>logout</Link>
 						</nav>

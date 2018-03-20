@@ -8,6 +8,10 @@ import Header from './header';
 
 import Home from '../routes/home';
 import Bookings from '../routes/bookings';
+import ShuttleOffers from '../routes/shuttle-offers';
+import CreateEditCar from '../routes/create-edit-car';
+import CreateEditShuttle from '../routes/create-edit-shuttle';
+import Fleet from '../routes/fleet';
 import Login from '../routes/login';
 
 function nextUrl(uri, isUser) {
@@ -34,14 +38,25 @@ export default class App extends Component {
 		});
 	}
 
+	isVendor = user => {
+		if (!user) {
+			return false;
+		}
+		return user.roles.some(r => r === 'vendor') && user.vendorId && user.vendorId.length > 0;
+	}
+
 	render({ }, { user }) {
 		return (
 			<div id="app">
-				<Header user={user} />
+				<Header user={user} isVendor={this.isVendor(user)}/>
 				<div class="container">
 					<Router onChange={this.handleRoute}>
 						<Home path="/" />
 						<Bookings path="/bookings" user={user} />
+						<ShuttleOffers path="/offers" user={user} isVendor={this.isVendor(user)}/>
+						<CreateEditShuttle path="/offer-details/:id?" user={user} isVendor={this.isVendor(user)}/>
+						<Fleet path="/fleet" user={user} isVendor={this.isVendor(user)}/>
+						<CreateEditCar path="/fleet-details/:id?" user={user} isVendor={this.isVendor(user)}/>
 						<Login path="/login/:token?" />
 					</Router>
 				</div>
