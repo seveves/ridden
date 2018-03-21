@@ -1,6 +1,5 @@
 import { h, Component } from 'preact';
 import Portal from 'preact-portal';
-import style from './style';
 import { get, del } from '../../api';
 
 import { RidesList } from '../../components/rides-list';
@@ -41,7 +40,7 @@ export default class Shuttles extends Component {
 	render({ }, { shuttles, showConfirm }) {
 		return (
 			<div class={style.rides}>
-				<h1 class="title margin-top">shuttles</h1>
+				<h1>shuttles</h1>
 				<p class="sub-title">you are organizing these trips. nice!</p>
 				<RidesList rides={shuttles} onDelete={this.deleteShuttle} />
 				<div class="fab-container">

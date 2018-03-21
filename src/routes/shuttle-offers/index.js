@@ -26,9 +26,11 @@ export default class ShuttleOffers extends Component {
       return (<p>No access to this route.</p>);
     }
 		return (
-			<div class="margin-top">
-				<h1 class="title">shuttle offers</h1>
-				<Link href="/offer-details">Create</Link>
+			<div>
+				<div class="page-title d-flex flex-row aic">
+					<h1>Shuttle Offers</h1>
+					<Link class="btn btn-hero ml-auto" href="/offer-details"><span>Create</span></Link>
+				</div>
 				<OffersList offers={offers}></OffersList>
 			</div>
 		);

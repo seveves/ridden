@@ -1,0 +1,41 @@
+form {
+  display: flex;
+  flex-direction: column;
+
+  input, textarea, select {
+    font-size: 1.25rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 300;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input[type=submit],  button[type=submit] {
+    margin-left: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  input[type=text], input[type=number], textarea, select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    background-color: rgba($rdn-green, .1);
+    transition: background-color .3s;
+    border: 1px solid rgba($rdn-green, .5);
+
+    &:focus {
+      outline-color: rgba($rdn-green, 1);
+      background-color: rgba($rdn-green, .3);      
+    }
+
+    &:disabled {
+      background-color: rgba($rdn-green, .1);
+      border: 1px solid rgba($rdn-green, .1);
+      cursor: not-allowed;
+    }
+  }
+}

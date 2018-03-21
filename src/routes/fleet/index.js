@@ -2,7 +2,6 @@ import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 
 import { get } from '../../api';
-import style from './style';
 
 import { CarsList } from '../../components/cars-list';
 
@@ -27,12 +26,13 @@ export default class Fleet extends Component {
       return (<p>No access to this route.</p>);
     }
 		return (
-			<div class="margin-top">
-				<h1 class="title">fleet</h1>
-				<div class={style['fleet-container']}>
-					<div class={style['fleet-cars-list']}>
-						<h2>Your fleet</h2>
-						<Link href="/fleet-details">Create</Link>
+			<div>
+				<div class="page-title d-flex flex-row aic">
+					<h1>Fleet</h1>
+					<Link class="btn btn-hero ml-auto" href="/fleet-details"><span>Create</span></Link>
+				</div>
+				<div>
+					<div>
 						<CarsList cars={cars}></CarsList>
 					</div>
 				</div>

@@ -1,0 +1,41 @@
+.burger {
+  margin-left: auto;
+  display: none;
+  cursor: pointer;
+
+ .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 3px;
+    background-color: #E5F1EE;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+
+  &.change {
+    .bar1 {
+      transform: rotate(-45deg) translate(-10px, 6px);
+    }
+    
+    .bar2 {
+      opacity: 0;
+    }
+    
+    .bar3 {
+      transform: rotate(45deg) translate(-6px, -2px);
+    }
+  }
+}
+
+.hidden-sm {
+  display: block;
+}
+
+@media (max-width: $bp-sm) {
+  .burger {
+    display: block;
+  }
+
+  .hidden-sm {
+    display: none;
+  }
+}

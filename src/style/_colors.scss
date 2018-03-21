@@ -1,0 +1,10 @@
+$rdn-green: rgb(6, 110, 110);
+$rdn-green-light: rgba($rdn-green, .5);
+$rdn-green-lighter: rgba($rdn-green, .25);
+$rdn-text: #333;
+$rdn-text-light: #666;
+$rdn-border: #ccc;
+$rdn-box-shadow: 0 4px 5px 0px rgba(0, 0, 0, .3);
+$rdn-grad: linear-gradient(75deg, $rdn-green, lighten($rdn-green, 12));
+$rdn-grad-default: linear-gradient(75deg, $rdn-green-light, $rdn-green-lighter);
+$rdn-grad-warn: linear-gradient(75deg, rgba($rdn-green, .3), lighten(rgba($rdn-green, 10), 12));

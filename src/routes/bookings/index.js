@@ -21,8 +21,8 @@ export default class Bookings extends Component {
 
 	render({ user }, { bookings }) {
 		return (
-			<div class="margin-top">
-				<h1 class="title">bookings</h1>
+			<div>
+				<h1 class="page-title d-flex aic">Bookings</h1>
 				<BookingsList bookings={bookings}></BookingsList>
 			</div>
 		);

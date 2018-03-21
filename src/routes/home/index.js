@@ -48,8 +48,8 @@ export default class Home extends Component {
 
 	render({}, { shuttles, geo }) {
 		return (
-			<div class="margin-top">
-				<h1 class="title">shuttles</h1>
+			<div>
+				<h1 class="page-title d-flex aic">Shuttles</h1>
 				{ geo ? <DistancePicker onUpdateDistance={(distance) => this.updateDistance(distance)} /> : null }
 				<ShuttlesList shuttles={shuttles}></ShuttlesList>
 			</div>

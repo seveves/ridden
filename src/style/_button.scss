@@ -1,0 +1,75 @@
+a.btn {
+  span {
+    padding-top: 5px;
+
+    &::after {
+      top: 5px;
+    }
+  }
+}
+
+.btn-hero {
+  background: $rdn-grad;
+  color: #FFF;
+}
+
+.btn-default {
+  background: $rdn-grad-default;
+  color: $rdn-text;
+}
+
+.btn-warn {
+  background: $rdn-grad-warn;
+  color: $rdn-text;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  text-align: center;
+  line-height: 1.5;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  min-width: 180px;
+  max-height: 45px;
+  height: 45px;
+  transition: all 0.5s;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+
+  span {
+    cursor: pointer;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+
+    &::after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+  }
+
+  &:hover span {
+    padding-right: 25px;
+  }
+
+  &:hover span::after {
+    opacity: 1;
+    right: 0;
+  }
+}

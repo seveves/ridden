@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { Link } from 'preact-router/match';
 import Portal from 'preact-portal';
 
 import { get, post, put, del } from '../../api';
@@ -62,9 +63,11 @@ export default class CreateEditCar extends Component {
 
 	render({ id, user, isVendor }, state) {
 		return (
-			<div class="margin-top">
-				<h1 class="title">{ id ? 'details' : 'create' }</h1>
-				{ id ? <button onClick={this.confirmDelete}>delete</button> : null }
+			<div>
+				<div class="page-title d-flex flex-row aic">
+					<h1>{ id ? 'Car Details' : 'Create Car' }</h1>
+					<Link class="ml-auto btn btn-default" href="/fleet"><span>Back</span></Link>
+				</div>
 				<form onSubmit={this.handleSubmit}>
 					<div>
 						<label>Name</label>
@@ -78,8 +81,15 @@ export default class CreateEditCar extends Component {
 						<label>Max</label>
 						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} />
 					</div>
-					<input type="submit" value={id ? 'save' : 'create'} />
+					<button class="btn btn-hero" type="submit"><span>{id ? 'Update' : 'Create'}</span></button>
 				</form>
+				{ id
+					? 
+						<div>
+							<h3 class="extra-title">Extra actions</h3>
+							<button class="btn btn-warn" onClick={this.confirmDelete}><span>Delete</span></button>
+						</div>
+					: null }
 				{ state.showConfirm ? (
 					<Portal into="body">
 						<ModalPopup onClose={this.closeModal}>
