@@ -1,5 +1,4 @@
 import { h, Component } from 'preact';
-import style from './style';
 
 export default class ModalPopup extends Component {
 
@@ -9,9 +8,9 @@ export default class ModalPopup extends Component {
 
 	render({ children, onClose }) {
 		return (
-			<div class={style.modal} onClick={onClose}>
-				<div class={style['modal-content']} onClick={this.handleEvent}>
-					<span class={style.close} onClick={onClose}>&times;</span>
+			<div class="modal" onClick={onClose}>
+				<div class="modal-container w-auto" onClick={this.handleEvent}>
+					<span class="close" onClick={onClose}>&times;</span>
 					<div>{this.props.children}</div>
 				</div>
 			</div>

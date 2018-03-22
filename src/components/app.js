@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { Router, route } from 'preact-router';
+import { SlotProvider, Slot } from 'preact-slots';
 
 import { bus } from '../utils';
 import { getUser } from '../utils/local';
@@ -9,6 +10,7 @@ import Header from './header';
 import Home from '../routes/home';
 import Bookings from '../routes/bookings';
 import ShuttleOffers from '../routes/shuttle-offers';
+import ShuttleDetails from '../routes/shuttle-details';
 import CreateEditCar from '../routes/create-edit-car';
 import CreateEditShuttle from '../routes/create-edit-shuttle';
 import Fleet from '../routes/fleet';
@@ -47,20 +49,24 @@ export default class App extends Component {
 
 	render({ }, { user }) {
 		return (
-			<div id="app">
-				<Header user={user} isVendor={this.isVendor(user)}/>
-				<div class="container">
-					<Router onChange={this.handleRoute}>
-						<Home path="/" />
-						<Bookings path="/bookings" user={user} />
-						<ShuttleOffers path="/offers" user={user} isVendor={this.isVendor(user)}/>
-						<CreateEditShuttle path="/offer-details/:id?" user={user} isVendor={this.isVendor(user)}/>
-						<Fleet path="/fleet" user={user} isVendor={this.isVendor(user)}/>
-						<CreateEditCar path="/fleet-details/:id?" user={user} isVendor={this.isVendor(user)}/>
-						<Login path="/login/:token?" />
-					</Router>
+			<SlotProvider>
+				<div id="app">
+					<Slot name="modal"></Slot>
+					<Header user={user} isVendor={this.isVendor(user)}/>
+					<div class="container">
+						<Router onChange={this.handleRoute}>
+							<Home path="/" />
+							<Bookings path="/bookings" user={user} />
+							<ShuttleDetails path="/shuttle-details/:id" user={user} isVendor={this.isVendor}/>
+							<ShuttleOffers path="/offers" user={user} isVendor={this.isVendor(user)}/>
+							<CreateEditShuttle path="/offer-details/:id?" user={user} isVendor={this.isVendor(user)}/>
+							<Fleet path="/fleet" user={user} isVendor={this.isVendor(user)}/>
+							<CreateEditCar path="/fleet-details/:id?" user={user} isVendor={this.isVendor(user)}/>
+							<Login path="/login/:token?" />
+						</Router>
+					</div>
 				</div>
-			</div>
+			</SlotProvider>
 		);
 	}
 }

@@ -12,6 +12,10 @@ html, body {
 	margin-right: 1rem;
 }
 
+.w-auto {
+	width: 90%;
+}
+
 @media(min-width: $bp-sm) {
 	.container {
 		margin-left: 3rem;
@@ -74,6 +78,10 @@ html, body {
 
 .mr-2 {
 	margin-right: 2rem;
+}
+
+.ml-2 {
+	margin-left: 2rem;
 }
 
 .ml-auto {

@@ -27,3 +27,10 @@ export function toErrors(obj) {
 	}
 	return arr;
 }
+
+export function sum(arr, mapFn) {
+	if (!arr || !mapFn) {
+		return 0;
+	}
+	return arr.map(mapFn).reduce((p, c) => p + c, 0);
+}

@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { Link } from 'preact-router/match';
+import { sum } from '../../utils';
 
 export const ShuttlesList = ({ shuttles }) => (
 	<div>
@@ -20,7 +21,7 @@ export const ShuttlesList = ({ shuttles }) => (
 											<div class="list-text">departure</div>
 										</div>
 										<div class="mr-2">
-											<div class="list-label">{shuttle.bookings.length}/{shuttle.max}</div>
+											<div class="list-label">{sum(shuttle.bookings, b => b.amount)}/{shuttle.max}</div>
 											<div class="list-text">seats taken</div>
 										</div>
 										<div>
