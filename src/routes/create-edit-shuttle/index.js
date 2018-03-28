@@ -1,16 +1,16 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-import Portal from 'preact-portal';
+import { SlotContent } from 'preact-slots';
 
 import { get, post, put, del } from '../../api';
 
 import ModalPopup from '../../components/modal-popup';
+import DatePicker from '../../components/date-picker';
 
 export default class CreateEditShuttleOffer extends Component {
 
 	state = {
 		form: {
-			departure: new Date().toISOString(),
 			title: '',
 			description: '',
 			type: 'OneWay',
@@ -19,6 +19,7 @@ export default class CreateEditShuttleOffer extends Component {
 			min: 2,
 			carId: null
 		},
+		departure: new Date(),
 		location: {
 			name: '',
 			long: 10,
@@ -32,13 +33,15 @@ export default class CreateEditShuttleOffer extends Component {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		this.setState({ form: { ...this.state.form, [name]: value } });
+		const max = name === 'carId' ? this.state.cars.filter(c => c._id === value).map(c => c.max) : this.state.form.max;
+		this.setState({ form: { ...this.state.form, max, [name]: value } });
 	}
 
 	handleSubmit = ev => {
 		ev.preventDefault();
 		const shuttle = {
 			...this.state.form,
+			departure: this.state.departure.toISOString(),
 			vendorId: this.props.user.vendorId
 		};
 		if (this.state.location) {
@@ -87,7 +90,7 @@ export default class CreateEditShuttleOffer extends Component {
 									description: shuttle.description,
 									type: shuttle.type,
 									duration: shuttle.duration,
-									max: shuttle.max,
+									max: cars[0].max,
 									min: shuttle.min,
 									carId: shuttle.carId
 								},
@@ -118,8 +121,9 @@ export default class CreateEditShuttleOffer extends Component {
 						<input type="text" value={state.form.title} name="title" onChange={this.handleChange} />
 					</div>
 					<div>
-						<label>Date</label>
-						<input type="text" value={state.form.departure} name="departure" onChange={this.handleChange} />
+						<label>Departure</label>
+						<DatePicker data-enable-time value={state.departure}
+												onChange={dates => { this.setState({ departure: dates[0] }) }} />
 					</div>
 					<div>
 						<label>Description</label>
@@ -127,11 +131,14 @@ export default class CreateEditShuttleOffer extends Component {
 					</div>
 					<div>
 						<label>Type</label>
-						<input type="text" value={state.form.type} name="type" onChange={this.handleChange} />
+						<select value={state.form.type} name="type" onChange={this.handleChange}>
+							<option value="OneWay">One Way</option>
+							<option value="FullDay">Full Day</option>
+						</select>
 					</div>
 					<div>
 						<label>Max</label>
-						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} />
+						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} disabled/>
 					</div>
 					<div>
 						<label>Min</label>
@@ -157,13 +164,13 @@ export default class CreateEditShuttleOffer extends Component {
 						</div>
 					: null }
 				{ state.showConfirm ? (
-					<Portal into="body">
+					<SlotContent slot="modal">
 						<ModalPopup onClose={this.closeModal}>
 							<h1>Delete shuttle</h1>
 							<p>Do you really want to delete this shuttle?</p>
-							<button onClick={this.delete}>Delete</button>
+							<button class="btn btn-warn" onClick={this.delete}><span>Delete</span></button>
 						</ModalPopup>
-					</Portal>
+					</SlotContent>
 				) : null }
 			</div>
 		);

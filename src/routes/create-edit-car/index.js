@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-import Portal from 'preact-portal';
+import { SlotContent } from 'preact-slots';
 
 import { get, post, put, del } from '../../api';
 
@@ -14,6 +14,7 @@ export default class CreateEditCar extends Component {
 			name: '',
 			description: ''
 		},
+		used: false,
 		showConfirm: false
 	};
 
@@ -57,7 +58,11 @@ export default class CreateEditCar extends Component {
 
 	componentDidMount() {
 		if (this.props.id) {
-			get(`cars/${this.props.id}`).then(car => this.setState({ form: car }));
+			get(`cars/${this.props.id}`).then(car => {
+				const form = { ...car };
+				delete form.used;
+				this.setState({ form, used: car.used });
+			});
 		}
 	}
 
@@ -79,7 +84,8 @@ export default class CreateEditCar extends Component {
 					</div>
 					<div>
 						<label>Max</label>
-						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} />
+						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} disabled={state.used}/>
+						{ state.used && <p>Can't change max because car is in use</p> }
 					</div>
 					<button class="btn btn-hero" type="submit"><span>{id ? 'Update' : 'Create'}</span></button>
 				</form>
@@ -91,13 +97,13 @@ export default class CreateEditCar extends Component {
 						</div>
 					: null }
 				{ state.showConfirm ? (
-					<Portal into="body">
+					<SlotContent slot="modal">
 						<ModalPopup onClose={this.closeModal}>
 							<h1>Delete car</h1>
 							<p>Do you really want to delete this car?</p>
 							<button onClick={this.delete}>Delete</button>
 						</ModalPopup>
-					</Portal>
+					</SlotContent>
 				) : null }
 			</div>
 		);
