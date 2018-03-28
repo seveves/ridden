@@ -1,6 +1,6 @@
+import 'flatpickr/dist/themes/airbnb';
 import { h, Component } from 'preact'
 import Flatpickr from 'flatpickr'
-import 'flatpickr/dist/themes/airbnb';
 
 const hooks = [
   'onChange',
@@ -14,7 +14,6 @@ const hooks = [
 ]
 
 class DateTimePicker extends Component {
-
   static defaultProps = {
     options: {}
   }
@@ -81,15 +80,17 @@ class DateTimePicker extends Component {
     this.flatpickr.destroy()
   }
 
-  render(props, state) {
-    const { options, defaultValue, value, children } = { ...this.props, ...props };
+  render(props) {
+    // eslint-disable-next-line no-unused-vars
+    const { options, defaultValue, value, children } = this.props;
+    props = { ...this.props, ...props };
 
     // Don't pass hooks to dom node
     hooks.forEach(hook => {
       delete props[hook]
     })
 
-    return options && options.wrap
+    return options.wrap
       ? (
         <div {...props} ref={node => { this.node = node }}>
           { children }

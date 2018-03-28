@@ -55,6 +55,12 @@ export default class CreateEditShuttleOffer extends Component {
 		}
 	}
 
+	handleDateChange = e => {
+		if (e && e.length) {
+			this.setState({ departure: e[0] });
+		}
+	}
+
 	delete = ev => {
 		ev.preventDefault();
 		if (this.props.id) {
@@ -123,7 +129,7 @@ export default class CreateEditShuttleOffer extends Component {
 					<div>
 						<label>Departure</label>
 						<DatePicker data-enable-time value={state.departure}
-												onChange={dates => { this.setState({ departure: dates[0] }) }} />
+												onChange={this.handleDateChange} />
 					</div>
 					<div>
 						<label>Description</label>
