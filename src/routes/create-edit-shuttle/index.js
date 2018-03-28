@@ -84,8 +84,8 @@ export default class CreateEditShuttleOffer extends Component {
 						.then(shuttle => {
 							this.setState({
 								cars: cars,
+								departure: new Date(shuttle.departure),
 								form: {
-									departure: shuttle.departure,
 									title: shuttle.title,
 									description: shuttle.description,
 									type: shuttle.type,

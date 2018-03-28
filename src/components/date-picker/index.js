@@ -15,10 +15,11 @@ const hooks = [
 
 class DateTimePicker extends Component {
 
+  static defaultProps = {
+    options: {}
+  }
+
   componentWillReceiveProps(props) {
-    if (!props.options) {
-      props.options = {};
-    }
     const { options } = props
     const prevOptions = this.props.options
 
@@ -81,9 +82,6 @@ class DateTimePicker extends Component {
   }
 
   render(props, state) {
-    if (!props.options) {
-      this.props.options = {};
-    }
     const { options, defaultValue, value, children } = { ...this.props, ...props };
 
     // Don't pass hooks to dom node
