@@ -14,14 +14,18 @@ export function headers() {
 	return obj;
 }
 
-export function login(accessToken, user) {+
-	setToken(TOKEN=accessToken);
-	setUser(user);
-	bus.emit('auth:change', user);
+export function login(accessToken, user) {
+	return new Promise((resolve, reject) => {
+		setToken(TOKEN=accessToken);
+		setUser(user);
+		resolve(user);
+	});
 }
 
 export function logout() {
-	bus.emit('auth:change', false);
-	setToken(false);
-	setUser(false);
+	return new Promise((resolve, reject) => {
+		setToken(false);
+		setUser(false);
+		resolve();
+	});
 }

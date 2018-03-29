@@ -1,10 +1,7 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-import { logout } from '../../api/index';
 
 export default class Header extends Component {
-
-	logout = logout;
 
 	navigateBack = () => {
 		history.back();
@@ -15,7 +12,7 @@ export default class Header extends Component {
     document.getElementsByClassName('toggle-vis')[0].classList.toggle('hidden-sm');
   }
 
-	render({ user, isVendor }) {
+	render({ user, logout }) {
 		return (
 			<header>
 				<h1><a href="/">ridden</a></h1>
@@ -29,9 +26,9 @@ export default class Header extends Component {
 						<nav class="toggle-vis hidden-sm">
 							<Link activeClassName="active" href="/">shuttles</Link>
 							<Link activeClassName="active" href="/bookings">bookings</Link>
-							{ isVendor ? <Link activeClassName="active" href="/offers">shuttle offers</Link> : null }
-							{ isVendor ? <Link activeClassName="active" href="/fleet">car fleet</Link> : null }
-							<Link activeClassName="active" href="/login" onClick={this.logout}>logout</Link>
+							{ user.isVendor ? <Link activeClassName="active" href="/offers">shuttle offers</Link> : null }
+							{ user.isVendor ? <Link activeClassName="active" href="/fleet">car fleet</Link> : null }
+							<Link activeClassName="active" href="/login" onClick={logout}>logout</Link>
 						</nav>
 					)
 					: (

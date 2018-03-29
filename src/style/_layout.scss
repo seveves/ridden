@@ -1,8 +1,6 @@
-html, body {
-	padding: 0;
+body, html {
 	margin: 0;
-	padding-bottom: 2rem;
-	background: #FDFDF5;
+	padding: 0;
 	color: #333333;
 }
 
@@ -12,18 +10,10 @@ html, body {
 	margin-right: 1rem;
 }
 
-.w-auto {
-	width: 90%;
-}
-
 @media(min-width: $bp-sm) {
 	.container {
 		margin-left: 3rem;
 		margin-right: 3rem;
-	}
-
-	.w-auto {
-		width: 80%;
 	}
 }
 
@@ -32,10 +22,6 @@ html, body {
 		margin-left: 6rem;
 		margin-right: 6rem;
 	}
-
-	.w-auto {
-		width: 70%;
-	}
 }
 
 @media(min-width: $bp-l) {
@@ -43,20 +29,12 @@ html, body {
 		margin-left: 9rem;
 		margin-right: 9rem;
 	}
-
-	.w-auto {
-		width: 70%;
-	}
 }
 
 @media(min-width: $bp-xl) {
 	.container {
 		margin-left: 15rem;
 		margin-right: 15rem;
-	}
-
-	.w-auto {
-		width: 70%;
 	}
 }
 

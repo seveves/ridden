@@ -45,7 +45,8 @@
     "preact-router": "^2.5.7",
     "preact-slots": "^1.0.0",
     "serve": "^6.5.3",
-    "unfetch": "^3.0.0"
+    "unfetch": "^3.0.0",
+    "unistore": "^3.0.4"
   },
   "jest": {
     "verbose": true,

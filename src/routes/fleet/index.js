@@ -1,28 +1,19 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-
-import { get } from '../../api';
+import { connect } from 'unistore/preact';
+import { actions } from '../../store';
 
 import { CarsList } from '../../components/cars-list';
 
+@connect('cars', actions)
 export default class Fleet extends Component {
 
-	state = { cars: null };
-
-	getCars() {
-		if (this.props.user) {
-			get(`cars`).then(cars => {
-				this.setState({ cars });
-			});
-		}
-	}
-
 	componentDidMount() {
-		this.getCars();
+		this.props.getCars();
 	}
 
-	render({ user, isVendor }, { cars, selectedCarId }) {
-    if (!isVendor) {
+	render({ user, cars, getCars }) {
+    if (!user.isVendor) {
       return (<p>No access to this route.</p>);
     }
 		return (

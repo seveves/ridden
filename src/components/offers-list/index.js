@@ -1,22 +1,23 @@
 import { h } from 'preact';
 import { Link } from 'preact-router/match';
+import { sum } from '../../utils';
 
 export const OffersList = ({ offers }) => (
 	<div>
 		{ offers !== null
 			? ( 
-					<ul class="list w-auto">
+					<ul class="list">
 					{
 						offers.map((offer) => (
-							<Link href={`/offer-details/${offer._id}`}>
-								<li>
+							<li>
+								<Link href={`/offer-details/${offer._id}`}>
 									<div class="d-flex flex-row aic">
 										<div>
 											<div class="list-label">{offer.title}</div>
 											<div class="list-text toe">{offer.description}</div>
 										</div>
 										<div class="ml-auto mr-2">
-											<div class="list-label">{offer.bookings.length}/{offer.max}</div>
+											<div class="list-label">{sum(offer.bookings, b => b.amount)}/{offer.max}</div>
 											<div class="list-text">seats taken</div>
 										</div>
 										<div>
@@ -25,8 +26,8 @@ export const OffersList = ({ offers }) => (
 											</svg>
 										</div>
 									</div>
-								</li>
-							</Link>
+								</Link>
+							</li>
 						))
 					}
 					</ul>

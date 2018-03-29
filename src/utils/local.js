@@ -20,7 +20,11 @@ export function setToken(str) {
 }
 
 export function getUser() {
-	return getItem('user');
+	const user = getItem('user');
+	if (user) {
+		user.isVendor = user.roles.some(r => r === 'vendor') && user.vendorId && user.vendorId.length > 0;
+	}
+	return user;
 }
 
 export function setUser(obj) {

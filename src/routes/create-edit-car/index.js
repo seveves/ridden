@@ -1,11 +1,12 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 import { SlotContent } from 'preact-slots';
-
-import { get, post, put, del } from '../../api';
+import { connect } from 'unistore/preact';
+import { actions } from '../../store';
 
 import ModalPopup from '../../components/modal-popup';
 
+@connect(['car', 'offers'], actions)
 export default class CreateEditCar extends Component {
 
 	state = {
@@ -14,7 +15,6 @@ export default class CreateEditCar extends Component {
 			name: '',
 			description: ''
 		},
-		used: false,
 		showConfirm: false
 	};
 
@@ -28,10 +28,10 @@ export default class CreateEditCar extends Component {
 	handleSubmit = ev => {
 		ev.preventDefault();
 		if (this.props.id) {
-			put(`cars/${this.props.id}`, { ...this.state.form }).then(() => console.log('updated'));
+			this.props.updateCar(this.props.id, { ...this.state.form });
 		}
 		else {
-			post('cars', { ...this.state.form }).then(() => history.back());
+			this.props.createCar({ ...this.state.form });
 		}
 	}
 
@@ -39,7 +39,7 @@ export default class CreateEditCar extends Component {
 		ev.preventDefault();
 		if (this.props.id) {
 			this.setState({ showConfirm: false }, () => {
-				del(`cars/${this.props.id}`).then(() => history.back());
+				this.props.deleteCar(this.props.id);
 			});
 		} else {
 			this.setState({ showConfirm: false });
@@ -56,17 +56,23 @@ export default class CreateEditCar extends Component {
 		this.setState({ showConfirm: false });
 	}
 
-	componentDidMount() {
-		if (this.props.id) {
-			get(`cars/${this.props.id}`).then(car => {
-				const form = { ...car };
-				delete form.used;
-				this.setState({ form, used: car.used });
+	componentWillReceiveProps(props) {
+		if (this.props.car !== props.car) {
+			this.setState({
+				form: {
+					max: props.car.max,
+					name: props.car.name,
+					description: props.car.description
+				}
 			});
 		}
 	}
 
-	render({ id, user, isVendor }, state) {
+	componentDidMount() {
+		this.props.getCar(this.props.id);
+	}
+
+	render({ id, user, car, offers, getCar, deleteCar, updateCar, createCar }, state) {
 		return (
 			<div>
 				<div class="page-title d-flex flex-row aic">
@@ -84,8 +90,8 @@ export default class CreateEditCar extends Component {
 					</div>
 					<div>
 						<label>Max</label>
-						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} disabled={state.used}/>
-						{ state.used && <p>Can't change max because car is in use</p> }
+						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} disabled={car && car.used}/>
+						{ (car && car.used) && <p>Can't change max because car is in use</p> }
 					</div>
 					<button class="btn btn-hero" type="submit"><span>{id ? 'Update' : 'Create'}</span></button>
 				</form>

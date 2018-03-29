@@ -6,11 +6,11 @@ export const ShuttlesList = ({ shuttles }) => (
 	<div>
 		{ shuttles !== null
 			? ( 
-					<ul class="list w-100">
+					<ul class="list">
 					{
 						shuttles.map((shuttle) => (
-							<Link href={`/shuttle-details/${shuttle._id}`}>
-								<li>
+							<li>
+								<Link href={`/shuttle-details/${shuttle._id}`}>
 									<div class="d-flex flex-row aic">
 										<div>
 											<div class="list-label">{shuttle.title}</div>
@@ -30,8 +30,8 @@ export const ShuttlesList = ({ shuttles }) => (
 											</svg>
 										</div>
 									</div>
-								</li>
-							</Link>
+								</Link>
+							</li>
 						))
 					}
 					</ul>

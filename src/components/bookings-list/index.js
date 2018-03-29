@@ -6,11 +6,11 @@ export const BookingsList = ({ bookings }) => (
 	<div>
 		{ bookings !== null
 			? ( 
-					<ul class="list w-100">
+					<ul class="list">
 					{
 						bookings.map((booking) => (
-							<Link href={`/shuttle-details/${booking._id}`}>
-								<li>
+							<li>
+								<Link href={`/shuttle-details/${booking._id}`}>
 									<div class="d-flex flex-row aic">
 										<div>
 											<div class="list-label">{booking.title}</div>
@@ -30,8 +30,8 @@ export const BookingsList = ({ bookings }) => (
 											</svg>
 										</div>
 									</div>
-								</li>
-							</Link>
+								</Link>
+							</li>
 						))
 					}
 					</ul>

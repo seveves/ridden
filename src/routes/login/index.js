@@ -1,26 +1,22 @@
 import { h, Component } from 'preact';
-import { login } from '../../api';
+import { route } from 'preact-router';
+import { connect } from 'unistore/preact';
 import { serialize, toErrors } from '../../utils';
+
+import { actions } from '../../store';
 
 const AUTH = GOOGLE_AUTH_URL;
 
+@connect('user', actions)
 export default class Login extends Component {
-
-	state = { loading: false, error: null };
 
 	componentDidMount() {
 		if (this.props.token) {
-			this.setState({ loading: true }, () => {
-				login(atob(this.props.token)).then(() => {
-					this.setState({ loading: false });
-				}, (err) => {
-					this.setState({ loading: false, error });
-				});
-			});
+			this.props.login(atob(this.props.token));
 		}
 	}
 
-	render({ token }, { loading, error }) {
+	render({ user, login, token }, { loading, error }) {
 		return (
 			<div>
 				<h1 class="page-title d-flex aic">login</h1>

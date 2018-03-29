@@ -1,12 +1,13 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 import { SlotContent } from 'preact-slots';
-
-import { get, post, put, del } from '../../api';
+import { connect } from 'unistore/preact';
+import { actions } from '../../store';
 
 import ModalPopup from '../../components/modal-popup';
 import DatePicker from '../../components/date-picker';
 
+@connect(['offer', 'cars'], actions)
 export default class CreateEditShuttleOffer extends Component {
 
 	state = {
@@ -25,7 +26,6 @@ export default class CreateEditShuttleOffer extends Component {
 			long: 10,
 			lat: 10
 		},
-		cars: [],
 		showConfirm: false
 	};
 
@@ -33,7 +33,9 @@ export default class CreateEditShuttleOffer extends Component {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		const max = name === 'carId' ? this.state.cars.filter(c => c._id === value).map(c => c.max) : this.state.form.max;
+		const max = name === 'carId' && this.props.cars && this.props.cars.length > 0
+			? this.props.cars.filter(c => c._id === value).map(c => c.max)[0]
+			: this.state.form.max;
 		this.setState({ form: { ...this.state.form, max, [name]: value } });
 	}
 
@@ -48,10 +50,10 @@ export default class CreateEditShuttleOffer extends Component {
 			shuttle['location'] = { ...this.state.location }
 		}
 		if (this.props.id) {
-			put(`shuttles/${this.props.id}`, shuttle).then(() => console.log('updated'));
+			this.props.updateOffer(this.props.id, shuttle);
 		}
 		else {
-			post('shuttles', shuttle).then(() => history.back());
+			this.props.createOffer(shuttle);
 		}
 	}
 
@@ -65,7 +67,7 @@ export default class CreateEditShuttleOffer extends Component {
 		ev.preventDefault();
 		if (this.props.id) {
 			this.setState({ showConfirm: false }, () => {
-				del(`shuttles/${this.props.id}`).then(() => history.back());
+				this.props.deleteOffer(this.props.id);
 			});
 		} else {
 			this.setState({ showConfirm: false });
@@ -82,39 +84,44 @@ export default class CreateEditShuttleOffer extends Component {
 		this.setState({ showConfirm: false });
 	}
 
-	componentDidMount() {
-		if (this.props.id) {
-			get(`vendors/${this.props.user.vendorId}/cars`)
-				.then(cars => {
-					get(`shuttles/${this.props.id}`)
-						.then(shuttle => {
-							this.setState({
-								cars: cars,
-								departure: new Date(shuttle.departure),
-								form: {
-									title: shuttle.title,
-									description: shuttle.description,
-									type: shuttle.type,
-									duration: shuttle.duration,
-									max: cars[0].max,
-									min: shuttle.min,
-									carId: shuttle.carId
-								},
-								location: shuttle.location
-						});
-					});	
-				});
-		} else {
-			get(`vendors/${this.props.user.vendorId}/cars`)
-				.then(cars => {
-					if (cars.length > 0) {
-						this.setState({ cars, form: { ...this.state.form, carId: cars[0]._id } });
-					}
-				});
+	componentWillReceiveProps(props) {
+		if (this.props.offer !== props.offer) {
+			let carId = props.offer.carId;
+			let max = 10;
+			if (carId) {
+				const car = this.props.cars.find(c => c._id === carId);
+				if (car) {
+					max = car.max;
+				}
+			} else {
+				carId = this.props.cars[0]._id;
+				max = this.props.cars[0].max;
+			}
+			this.setState({
+				form: {
+					max,
+					carId,
+					title: props.offer.title,
+					description: props.offer.description,
+					type: props.offer.type,
+					duration: props.offer.duration,
+					min: props.offer.min
+				},
+				location: {
+					name: props.offer.location.name,
+					long: props.offer.location.long,
+					lat: props.offer.location.lat
+				},
+				departure: new Date(props.offer.departure)
+			});
 		}
 	}
 
-	render({ id, user, isVendor }, state) {
+	componentDidMount() {
+		this.props.getOffer(this.props.id);
+	}
+
+	render({ id, user, cars, offer, getOffer, createOffer, updateOffer, deleteOffer }, state) {
 		return (
 			<div>
 				<div class="page-title d-flex flex-row aic">
@@ -157,7 +164,7 @@ export default class CreateEditShuttleOffer extends Component {
 					<div>
 						<label>Car</label>
 						<select value={state.form.carId} name="carId" onChange={this.handleChange}>
-							{ state.cars.map(car => (<option value={car._id}>{car.name}</option>)) }
+							{ cars.map(car => (<option value={car._id}>{car.name}</option>)) }
 						</select>
 					</div>
 					<button class="btn btn-hero" type="submit"><span>{ id ? 'Update' : 'Create'} </span></button>

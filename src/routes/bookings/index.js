@@ -1,25 +1,17 @@
 import { h, Component } from 'preact';
-import { get } from '../../api';
+import { connect } from 'unistore/preact';
+import { actions } from '../../store';
 
 import { BookingsList } from '../../components/bookings-list';
 
+@connect('bookings', actions)
 export default class Bookings extends Component {
 
-	state = { bookings: null };
-
-	getBookings() {
-		if (this.props.user) {
-			get(`riders/${this.props.user._id}/shuttles`).then(bookings => {
-				this.setState({ bookings });
-			});
-		}
-	}
-
 	componentDidMount() {
-		this.getBookings();
+		this.props.getBookings();
 	}
 
-	render({ user }, { bookings }) {
+	render({ bookings, getBookings }) {
 		return (
 			<div>
 				<h1 class="page-title d-flex aic">Bookings</h1>

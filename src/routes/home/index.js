@@ -1,9 +1,11 @@
 import { h, Component } from 'preact';
-import { get } from '../../api';
+import { connect } from 'unistore/preact';
+import { actions } from '../../store';
 
 import { ShuttlesList } from '../../components/shuttles-list';
 import DistancePicker from '../../components/distance-picker';
 
+@connect('shuttles', actions)
 export default class Home extends Component {
 
 	state = {
@@ -16,9 +18,7 @@ export default class Home extends Component {
 
 	getShuttles() {
 		const param = this.state.geo ? `?near=${this.state.distance}:${this.state.lat}:${this.state.lon}` : '';
-		get(`shuttles${param}`).then(shuttles => {
-			this.setState({ shuttles });
-		});
+		this.props.getShuttles(param);
 	}
 
 	updateDistance(distance) {
@@ -28,6 +28,7 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
+		this.getShuttles();
 		navigator.geolocation.getCurrentPosition((position) => {
 			this.setState({
 				lat: position.coords.latitude,
@@ -46,11 +47,13 @@ export default class Home extends Component {
 		});
 	}
 
-	render({}, { shuttles, geo }) {
+	render({ shuttles, getShuttles }, { geo }) {
 		return (
 			<div>
 				<h1 class="page-title d-flex aic">Shuttles</h1>
-				{ geo ? <DistancePicker onUpdateDistance={(distance) => this.updateDistance(distance)} /> : null }
+				<div>
+					{ geo ? <DistancePicker onUpdateDistance={(distance) => this.updateDistance(distance)} /> : null }
+				</div>
 				<ShuttlesList shuttles={shuttles}></ShuttlesList>
 			</div>
 		);

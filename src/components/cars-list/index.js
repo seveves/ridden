@@ -5,7 +5,7 @@ export const CarsList = ({ cars }) => (
 	<div>
 		{ cars !== null
 			? ( 
-					<ul class="list w-auto">
+					<ul class="list">
 					{
 						cars.map((car) => (
 							<Link href={`/fleet-details/${car._id}`}>
