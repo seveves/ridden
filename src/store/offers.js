@@ -6,8 +6,17 @@ const offersActions = store => ({
       if (!state.user) {
         resolve(state);
       } else {
-        get(`vendors/${state.user.vendorId}/shuttles`)
-          .then(offers => resolve({ offers }));
+        if (!state.cars) {
+          get(`cars`).then((cars) => {
+            get(`vendors/${state.user.vendorId}/shuttles`)
+              .then((offers) => {
+                resolve({ cars, offers });
+              });
+          })
+        } else {
+          get(`vendors/${state.user.vendorId}/shuttles`)
+            .then(offers => resolve({ offers }));
+        }
       }
     });
   },
@@ -15,30 +24,43 @@ const offersActions = store => ({
   getOffer(state, id) {
     return new Promise((resolve, reject) => {
       if (!id) {
-        resolve({
-          offer: {
-            title: '',
-            description: '',
-            type: 'OneWay',
-            duration: 2,
-            max: 10,
-            min: 2,
-            carId: null,
-            departure: new Date(),
-            location: {
-              name: '',
-              long: 10,
-              lat: 10
-            }
+        const initOffer = {
+          title: '',
+          description: '',
+          type: 'OneWay',
+          duration: 2,
+          max: 10,
+          min: 2,
+          carId: null,
+          departure: new Date(),
+          location: {
+            name: '',
+            long: 10,
+            lat: 10
           }
-        });
+        };
+        if (!state.cars) {
+          get(`cars`).then(cars  => resolve({ cars, offer: initOffer }));
+        } else {
+          resolve({ offer: initOffer });
+        }
       } else {
         const offerIndex = state.offers.findIndex(o => o._id === id);
         if (offerIndex !== -1) {
           const exOffer = { ...state.offers[offerIndex] };
-          resolve({ offer: exOffer });
+          if (!state.cars) {
+            get(`cars`).then(cars  => resolve({ offer: exOffer }));
+          } else {
+            resolve({ offer: exOffer });
+          }
         } else {
-          get(`shuttles/${id}`).then(offer => resolve({ offer }));
+          if (!state.cars) {
+            get(`cars`).then((cars) => {
+              get(`shuttles/${id}`).then(offer => resolve({ cars, offer }));
+            });
+          } else {
+            get(`shuttles/${id}`).then(offer => resolve({ offer }));
+          }
         }
       }
     });

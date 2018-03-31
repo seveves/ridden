@@ -4,10 +4,12 @@ ul.list {
   margin: 0;
 
   a {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     text-decoration: none;
     transition: background-color .3s;
     color: $rdn-text;
+    padding: 1rem;
 
     &:visited, &:active {
       color: $rdn-text;
@@ -19,17 +21,45 @@ ul.list {
   }
 
   li {
-    padding: 1rem;
     border-bottom: 1px solid $rdn-border;
-
-    .list-label {
-      font-size: 1.25rem;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-    }
-
-    .list-text {
-      color: $rdn-text-light;
-    }
   }
+
+  .list-label {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+  }
+
+  .list-text {
+    color: $rdn-text-light;
+  }
+}
+
+
+@media(min-width: $bp-sm) {
+	.container {
+		margin-left: 3rem;
+		margin-right: 3rem;
+	}
+}
+
+@media(min-width: $bp-md) {
+	.container {
+		margin-left: 6rem;
+		margin-right: 6rem;
+	}
+}
+
+@media(min-width: $bp-l) {
+	.container {
+		margin-left: 9rem;
+		margin-right: 9rem;
+	}
+}
+
+@media(min-width: $bp-xl) {
+	.container {
+		margin-left: 15rem;
+		margin-right: 15rem;
+	}
 }

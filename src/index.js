@@ -1,4 +1,5 @@
 import './style';
+import 'normalize.css';
 import { Provider } from 'unistore/preact';
 import App from './components/app';
 

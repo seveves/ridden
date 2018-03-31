@@ -11,20 +11,18 @@ export const OffersList = ({ offers }) => (
 						offers.map((offer) => (
 							<li>
 								<Link href={`/offer-details/${offer._id}`}>
-									<div class="d-flex flex-row aic">
-										<div>
-											<div class="list-label">{offer.title}</div>
-											<div class="list-text toe">{offer.description}</div>
-										</div>
-										<div class="ml-auto mr-2">
-											<div class="list-label">{sum(offer.bookings, b => b.amount)}/{offer.max}</div>
-											<div class="list-text">seats taken</div>
-										</div>
-										<div>
-											<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-												<path fill="#666" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-											</svg>
-										</div>
+									<div class="list-group">
+										<div class="list-label toe">{offer.title}</div>
+										<div class="list-text toe">{offer.description}</div>
+									</div>
+									<div class="list-group">
+										<div class="list-label">{sum(offer.bookings, b => b.amount)}/{offer.max}</div>
+										<div class="list-text">seats taken</div>
+									</div>
+									<div class="list-group asc">
+										<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+											<path fill="#666" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+										</svg>
 									</div>
 								</Link>
 							</li>

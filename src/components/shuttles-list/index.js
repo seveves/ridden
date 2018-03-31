@@ -11,24 +11,22 @@ export const ShuttlesList = ({ shuttles }) => (
 						shuttles.map((shuttle) => (
 							<li>
 								<Link href={`/shuttle-details/${shuttle._id}`}>
-									<div class="d-flex flex-row aic">
-										<div>
-											<div class="list-label">{shuttle.title}</div>
-											<div class="list-text toe">{shuttle.description}</div>
-										</div>
-										<div class="ml-auto mr-2">
-											<div class="list-label">{new Date(shuttle.departure).toLocaleString()}</div>
-											<div class="list-text">departure</div>
-										</div>
-										<div class="mr-2">
-											<div class="list-label">{sum(shuttle.bookings, b => b.amount)}/{shuttle.max}</div>
-											<div class="list-text">seats taken</div>
-										</div>
-										<div>
-											<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-												<path fill="#666" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-											</svg>
-										</div>
+									<div class="list-group">
+										<div class="list-label toe">{shuttle.title}</div>
+										<div class="list-text toe">{shuttle.description}</div>
+									</div>
+									<div class="list-group">
+										<div class="list-label">{new Date(shuttle.departure).toLocaleString()}</div>
+										<div class="list-text">departure</div>
+									</div>
+									<div class="list-group">
+										<div class="list-label">{sum(shuttle.bookings, b => b.amount)}/{shuttle.max}</div>
+										<div class="list-text">seats taken</div>
+									</div>
+									<div class="list-group asc">
+										<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+											<path fill="#666" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+										</svg>
 									</div>
 								</Link>
 							</li>

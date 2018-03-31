@@ -1,14 +1,9 @@
-@import 'typo';
 @import 'grid';
+@import 'typo';
 @import 'layout';
-
 @import 'header';
 @import 'burger';
 @import 'form';
 @import 'button';
 @import 'list';
 @import 'modal';
-
-*, *:before, *:after {
-  box-sizing: border-box;
-}

@@ -1,10 +1,6 @@
 a.btn {
   span {
-    padding-top: 5px;
-
-    &::after {
-      top: 5px;
-    }
+    top: 8px;
   }
 }
 
@@ -28,10 +24,7 @@ a.btn {
   border: none;
   text-align: center;
   line-height: 1.5;
-  padding: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  min-width: 180px;
+  width: 150px;
   max-height: 45px;
   height: 45px;
   transition: all 0.5s;
@@ -46,6 +39,9 @@ a.btn {
   border: none;
   text-transform: uppercase;
   letter-spacing: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   span {
     cursor: pointer;

@@ -37,5 +37,11 @@ h4 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 200px;
+  width: 80px;
+}
+
+@media(min-width: $bp-sm) {
+	.toe {
+		width: 150px;
+	}
 }
