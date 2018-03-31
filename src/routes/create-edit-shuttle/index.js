@@ -124,8 +124,8 @@ export default class CreateEditShuttleOffer extends Component {
 	render({ id, user, cars, offer, getOffer, createOffer, updateOffer, deleteOffer }, state) {
 		return (
 			<div>
-				<div class="page-title d-flex flex-row aic">
-					<h1>{ id ? 'Shuttle Offer Details' : 'Create Shuttle Offer' }</h1>
+				<div class="d-flex flex-row">
+					<h1 class="page-title">{ id ? 'Shuttle Offer Details' : 'Create Shuttle Offer' }</h1>
 					<Link class="ml-auto btn btn-default" href="/offers"><span>Back</span></Link>
 				</div>
 				<form onSubmit={this.handleSubmit}>
@@ -173,7 +173,9 @@ export default class CreateEditShuttleOffer extends Component {
 					? 
 						<div>
 							<h3 class="extra-title">Extra actions</h3>
-							<button class="btn btn-warn" onClick={this.confirmDelete}><span>Delete</span></button>
+							<button class="btn btn-warn" onClick={this.confirmDelete}>
+								<span onClick={this.confirmDelete}>Delete</span>
+							</button>
 						</div>
 					: null }
 				{ state.showConfirm ? (
@@ -181,7 +183,9 @@ export default class CreateEditShuttleOffer extends Component {
 						<ModalPopup onClose={this.closeModal}>
 							<h1>Delete shuttle</h1>
 							<p>Do you really want to delete this shuttle?</p>
-							<button class="btn btn-warn" onClick={this.delete}><span>Delete</span></button>
+							<button class="btn btn-warn" onClick={this.delete}>
+								<span onClick={this.delete}>Delete</span>
+							</button>
 						</ModalPopup>
 					</SlotContent>
 				) : null }

@@ -50,7 +50,7 @@ export default class Home extends Component {
 	render({ shuttles, getShuttles }, { geo }) {
 		return (
 			<div>
-				<h1 class="page-title d-flex aic">Shuttles</h1>
+				<h1 class="page-title">Shuttles</h1>
 				<div>
 					{ geo ? <DistancePicker onUpdateDistance={(distance) => this.updateDistance(distance)} /> : null }
 				</div>

@@ -18,8 +18,8 @@ export default class Fleet extends Component {
     }
 		return (
 			<div>
-				<div class="page-title d-flex flex-row aic">
-					<h1>Fleet</h1>
+				<div class="d-flex flex-row">
+					<h1 class="page-title">Fleet</h1>
 					<Link class="btn btn-hero ml-auto" href="/fleet-details"><span>Create</span></Link>
 				</div>
 				<div>

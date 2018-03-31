@@ -59,10 +59,11 @@ export default class ShuttleDetails extends Component {
 			<div>
 				{ shuttle
 					?	<div>
-							<div class="page-title d-flex flex-row aic">
-								<h1>{shuttle.title}</h1>
-								{ (!shuttle.on && shuttle.taken < shuttle.max) && <button class="ml-auto btn btn-default" onClick={this.hopOnModal}><span>Hop on</span></button> }
-								{ shuttle.on && <button class="ml-auto btn btn-default"  onClick={this.hopOffModal}><span>Hop off</span></button> }
+							<div class="d-flex flex-row">
+								<h1 class="page-title">{shuttle.title}</h1>
+								{ (!shuttle.on && shuttle.taken < shuttle.max)
+									&& <button class="ml-auto btn btn-default" onClick={this.hopOnModal}><span onClick={this.hopOnModal}>Hop on</span></button> }
+								{ shuttle.on && <button class="ml-auto btn btn-default" onClick={this.hopOffModal}><span onClick={this.hopOffModal}>Hop off</span></button> }
 								{ user.isVendor && <Link class="btn btn-default ml-2" href={`/offer-details/${id}`}><span>Edit</span></Link> }
 							</div>
 							<h2 class="extra-title">Starting on {new Date(shuttle.departure).toLocaleTimeString()} at {new Date(shuttle.departure).toLocaleDateString()}</h2>
@@ -79,7 +80,9 @@ export default class ShuttleDetails extends Component {
 										<form>
 											<input type="number" value={amount} name="amount" onChange={this.handleChange}/>
 										</form>
-										<button class="btn btn-hero" onClick={() => this.hopOn()}><span>Hop on</span></button>
+										<button class="btn btn-hero" onClick={() => this.hopOn()}>
+											<span onClick={() => this.hopOn()}>Hop on</span>
+										</button>
 									</ModalPopup>
 								</SlotContent>
 							)}
@@ -89,7 +92,9 @@ export default class ShuttleDetails extends Component {
 									<ModalPopup onClose={this.closeModal}>
 										<h1>Hop off</h1>
 										<p>Can't make it anymore? Poor you.</p>
-										<button class="btn btn-hero" onClick={() => this.hopOff()}><span>Hop off</span></button>
+										<button class="btn btn-hero" onClick={() => this.hopOff()}>
+											<span onClick={() => this.hopOff()}>Hop off</span>
+										</button>
 									</ModalPopup>
 								</SlotContent>
 							)}

@@ -33,6 +33,7 @@ export default class App extends Component {
 	}
 
 	handleRoute = e => {
+		bus.emit('route:change', e);
 		const currentUrl = e.url;
 		const next = nextUrl(currentUrl, !!this.props.user);
 		if (next !== currentUrl) {

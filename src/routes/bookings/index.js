@@ -14,7 +14,7 @@ export default class Bookings extends Component {
 	render({ bookings, getBookings }) {
 		return (
 			<div>
-				<h1 class="page-title d-flex aic">Bookings</h1>
+				<h1 class="page-title">Bookings</h1>
 				<BookingsList bookings={bookings}></BookingsList>
 			</div>
 		);

@@ -19,7 +19,7 @@ export default class Login extends Component {
 	render({ user, login, token }, { loading, error }) {
 		return (
 			<div>
-				<h1 class="page-title d-flex aic">login</h1>
+				<h1 class="page-title">Login</h1>
 				{ error ? <p>{error}</p> : null }
 				<a class="btn btn-hero" href={AUTH}>
 					<span><svg style="width:24px;height:24px" viewBox="0 0 24 24">

@@ -75,8 +75,8 @@ export default class CreateEditCar extends Component {
 	render({ id, user, car, offers, getCar, deleteCar, updateCar, createCar }, state) {
 		return (
 			<div>
-				<div class="page-title d-flex flex-row aic">
-					<h1>{ id ? 'Car Details' : 'Create Car' }</h1>
+				<div class="d-flex flex-row">
+					<h1 class="page-title">{ id ? 'Car Details' : 'Create Car' }</h1>
 					<Link class="ml-auto btn btn-default" href="/fleet"><span>Back</span></Link>
 				</div>
 				<form onSubmit={this.handleSubmit}>
@@ -99,7 +99,9 @@ export default class CreateEditCar extends Component {
 					? 
 						<div>
 							<h3 class="extra-title">Extra actions</h3>
-							<button class="btn btn-warn" onClick={this.confirmDelete}><span>Delete</span></button>
+							<button class="btn btn-warn" onClick={this.confirmDelete}>
+								<span onClick={this.confirmDelete}>Delete</span>
+							</button>
 						</div>
 					: null }
 				{ state.showConfirm ? (
@@ -107,7 +109,9 @@ export default class CreateEditCar extends Component {
 						<ModalPopup onClose={this.closeModal}>
 							<h1>Delete car</h1>
 							<p>Do you really want to delete this car?</p>
-							<button onClick={this.delete}>Delete</button>
+							<button class="btn btn-warn" onClick={this.delete}>
+								<span onClick={this.delete}>Delete</span>
+							</button>
 						</ModalPopup>
 					</SlotContent>
 				) : null }

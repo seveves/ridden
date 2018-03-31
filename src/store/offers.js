@@ -6,7 +6,7 @@ const offersActions = store => ({
       if (!state.user) {
         resolve(state);
       } else {
-        if (!state.cars) {
+        if (!state.cars || state.cars.length === 0) {
           get(`cars`).then((cars) => {
             get(`vendors/${state.user.vendorId}/shuttles`)
               .then((offers) => {
@@ -39,7 +39,7 @@ const offersActions = store => ({
             lat: 10
           }
         };
-        if (!state.cars) {
+        if (!state.cars || state.cars.length === 0) {
           get(`cars`).then(cars  => resolve({ cars, offer: initOffer }));
         } else {
           resolve({ offer: initOffer });
@@ -48,13 +48,13 @@ const offersActions = store => ({
         const offerIndex = state.offers.findIndex(o => o._id === id);
         if (offerIndex !== -1) {
           const exOffer = { ...state.offers[offerIndex] };
-          if (!state.cars) {
+          if (!state.cars || state.cars.length === 0) {
             get(`cars`).then(cars  => resolve({ offer: exOffer }));
           } else {
             resolve({ offer: exOffer });
           }
         } else {
-          if (!state.cars) {
+          if (!state.cars || state.cars.length === 0) {
             get(`cars`).then((cars) => {
               get(`shuttles/${id}`).then(offer => resolve({ cars, offer }));
             });
