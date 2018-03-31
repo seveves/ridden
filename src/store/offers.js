@@ -1,70 +1,83 @@
 import { get, post, put, del } from '../api';
 
 const offersActions = store => ({
-  async getOffers(state) {
-    if (!state.user) {
-      return state;
-    }
-    const offers = await get(`vendors/${state.user.vendorId}/shuttles`);
-    return { offers };
+  getOffers(state) {
+    return new Promise((resolve, reject) => {
+      if (!state.user) {
+        resolve(state);
+      } else {
+        get(`vendors/${state.user.vendorId}/shuttles`)
+          .then(offers => resolve({ offers }));
+      }
+    });
   },
 
-  async getOffer(state, id) {
-    if (!id) {
-      return {
-        offer: {
-          title: '',
-          description: '',
-          type: 'OneWay',
-          duration: 2,
-          max: 10,
-          min: 2,
-          carId: null,
-          departure: new Date(),
-          location: {
-            name: '',
-            long: 10,
-            lat: 10
+  getOffer(state, id) {
+    return new Promise((resolve, reject) => {
+      if (!id) {
+        resolve({
+          offer: {
+            title: '',
+            description: '',
+            type: 'OneWay',
+            duration: 2,
+            max: 10,
+            min: 2,
+            carId: null,
+            departure: new Date(),
+            location: {
+              name: '',
+              long: 10,
+              lat: 10
+            }
           }
+        });
+      } else {
+        const offerIndex = state.offers.findIndex(o => o._id === id);
+        if (offerIndex !== -1) {
+          const exOffer = { ...state.offers[offerIndex] };
+          resolve({ offer: exOffer });
+        } else {
+          get(`shuttles/${id}`).then(offer => resolve({ offer }));
         }
-      };
-    }
-    const offerIndex = state.offers.findIndex(o => o._id === id);
-    if (offerIndex !== -1) {
-      const exOffer = { ...state.offers[offerIndex] };
-      return {
-        offer: exOffer
-      };
-    }
-    const offer = await get(`shuttles/${id}`);
-    return { offer };
+      }
+    });
   },
 
-  async createOffer(state, offer) {
-    const newOffer = await post('shuttles', { ...offer });
-    return { offer: newOffer, offers: [ ...state.offers, newOffer ] };
+  createOffer(state, offer) {
+    return new Promise((resolve, reject) => {
+      post('shuttles', { ...offer })
+        .then(newOffer => resolve({ offer: newOffer, offers: [ ...state.offers, newOffer ] }));
+    });
   },
 
-  async updateOffer(state, id, offer) {
-    const updatedOffer = await put(`shuttles/${id}`, { ...offer });
-    const offerIndex = state.offers.findIndex(o => o._id === id);
-    const offers = [
-      ...state.offers.slice(0, offerIndex),
-      updatedOffer,
-      ...state.offers.slice(offerIndex + 1)
-    ];
-    return { offer: updatedOffer, offers };
+  updateOffer(state, id, offer) {
+    return new Promise((resolve, reject) => {
+      put(`shuttles/${id}`, { ...offer }).then((updatedOffer) => {
+        const offerIndex = state.offers.findIndex(o => o._id === id);
+        const offers = [
+          ...state.offers.slice(0, offerIndex),
+          updatedOffer,
+          ...state.offers.slice(offerIndex + 1)
+        ];
+        resolve({ offer: updatedOffer, offers });
+      });
+    });
   },
 
-  async deleteOffer(state, id) {
-    const offerIndex = state.offers.findIndex(o => o._id === id);
-    const offers = [
-      ...state.offers.slice(0, offerIndex),
-      ...state.offers.slice(offerIndex + 1)
-    ];
-    await del(`shuttles/${id}`);
-    store.setState({ offer: null, offers });
-    history.back();
+  deleteOffer(state, id) {
+    return new Promise((resolve, reject) => {
+      const offerIndex = state.offers.findIndex(o => o._id === id);
+      const offers = [
+        ...state.offers.slice(0, offerIndex),
+        ...state.offers.slice(offerIndex + 1)
+      ];
+      del(`shuttles/${id}`).then(() => {
+        store.setState({ offer: null, offers });
+        history.back();
+        resolve();
+      });
+    });
   },
 });
 

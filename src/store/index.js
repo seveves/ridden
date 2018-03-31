@@ -1,5 +1,4 @@
 import createStore from 'unistore';
-import devtools from 'unistore/devtools';
 
 import { getUser } from '../utils/local';
 
@@ -22,7 +21,7 @@ function combineActions(...actions) {
   return (...args) => Object.assign(...actions.map(a => a(...args)));
 }
 
-const _store = ENV === 'production' ?  createStore(initialState) : devtools(createStore(initialState));
+const _store = createStore(initialState);
 const _actions = combineActions(
   userActions,
   carsActions,
