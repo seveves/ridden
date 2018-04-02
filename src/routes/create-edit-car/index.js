@@ -57,7 +57,7 @@ export default class CreateEditCar extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.car !== props.car) {
+		if (props.car && this.props.car !== props.car) {
 			this.setState({
 				form: {
 					max: props.car.max,
@@ -77,7 +77,7 @@ export default class CreateEditCar extends Component {
 			<div>
 				<div class="d-flex flex-row">
 					<h1 class="page-title">{ id ? 'Car Details' : 'Create Car' }</h1>
-					<Link class="ml-auto btn btn-default" href="/fleet"><span>Back</span></Link>
+					<Link class="ml-auto btn btn-default" href="/fleet">Back</Link>
 				</div>
 				<form onSubmit={this.handleSubmit}>
 					<div>
@@ -93,15 +93,13 @@ export default class CreateEditCar extends Component {
 						<input type="number" value={state.form.max} name="max" onChange={this.handleChange} disabled={car && car.used}/>
 						{ (car && car.used) && <p>Can't change max because car is in use</p> }
 					</div>
-					<button class="btn btn-hero" type="submit"><span>{id ? 'Update' : 'Create'}</span></button>
+					<button class="btn btn-hero" type="submit">{id ? 'Update' : 'Create'}</button>
 				</form>
 				{ id
 					? 
 						<div>
 							<h3 class="extra-title">Extra actions</h3>
-							<button class="btn btn-warn" onClick={this.confirmDelete}>
-								<span onClick={this.confirmDelete}>Delete</span>
-							</button>
+							<button class="btn btn-warn" onClick={this.confirmDelete}>Delete</button>
 						</div>
 					: null }
 				{ state.showConfirm ? (
@@ -109,9 +107,7 @@ export default class CreateEditCar extends Component {
 						<ModalPopup onClose={this.closeModal}>
 							<h1>Delete car</h1>
 							<p>Do you really want to delete this car?</p>
-							<button class="btn btn-warn" onClick={this.delete}>
-								<span onClick={this.delete}>Delete</span>
-							</button>
+							<button class="btn btn-warn" onClick={this.delete}>Delete</button>
 						</ModalPopup>
 					</SlotContent>
 				) : null }

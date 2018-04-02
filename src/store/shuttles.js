@@ -1,10 +1,13 @@
 import { get, post, put, del } from '../api';
-import { sum } from '../utils';
+import { bus, sum } from '../utils';
 
 const shuttlesActions = store => ({
   getShuttles(state, params) {
     return new Promise((resolve, reject) => {
-      get(`shuttles${params}`).then(shuttles => resolve({ shuttles }));
+      get(`shuttles${params}`).then(
+        shuttles => resolve({ shuttles }),
+        err => bus.emit('alert:new', { type: 'fail', title: 'Fetching shuttles failed', message: err, dismissable: true })
+      );
     });
   },
 
@@ -32,7 +35,9 @@ const shuttlesActions = store => ({
                 taken: sum(shuttle.bookings, b => b.amount)
               }
             });
-          });
+          },
+          err => bus.emit('alert:new', { type: 'fail', title: 'Fetching shuttle failed', message: err, dismissable: true })
+        );
         }
       }
     });
@@ -43,6 +48,7 @@ const shuttlesActions = store => ({
       post(`shuttles/${state.shuttle._id}/hopon`, { amount })
         .then(get(`shuttles/${state.shuttle._id}`))
         .then((shuttle) => {
+          bus.emit('alert:new', { type: 'ok', title: 'Good ride' , message: 'Have fun on this ride!' });
           resolve({
             shuttle: {
               ...shuttle,
@@ -50,7 +56,9 @@ const shuttlesActions = store => ({
               taken: sum(shuttle.bookings, b => b.amount)
             }
           });
-        });
+        },
+        err => bus.emit('alert:new', { type: 'fail', title: 'Hop on failed', message: err, dismissable: true })
+      );
     });
   },
 
@@ -59,6 +67,7 @@ const shuttlesActions = store => ({
       post(`shuttles/${state.shuttle._id}/hopoff`)
         .then(get(`shuttles/${state.shuttle._id}`))
         .then((shuttle) => {
+          bus.emit('alert:new', { type: 'ok', title: 'See you' , message: 'See you next time. Take care!' });
           resolve({
             shuttle: {
               ...shuttle,
@@ -66,7 +75,9 @@ const shuttlesActions = store => ({
               taken: sum(shuttle.bookings, b => b.amount)
             }
           });
-        });
+        },
+        err => bus.emit('alert:new', { type: 'fail', title: 'Hop off failed', message: err, dismissable: true })
+      );
     });
   },
 
@@ -75,7 +86,10 @@ const shuttlesActions = store => ({
       if (!state.user) {
         resolve(state);
       } else {
-        get(`riders/${state.user._id}/shuttles`).then(bookings => resolve({ bookings }));
+        get(`riders/${state.user._id}/shuttles`).then(
+          bookings => resolve({ bookings }),
+          err => bus.emit('alert:new', { type: 'fail', title: 'Fetching bookings failed', message: err, dismissable: true })
+        );
       }
     });
   }

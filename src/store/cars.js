@@ -1,4 +1,5 @@
 import { get, post, put, del } from '../api';
+import { bus } from '../utils';
 
 const carsActions = store => ({
   getCar(state, id) {
@@ -17,7 +18,10 @@ const carsActions = store => ({
           const exCar = { ...state.cars[carIndex] };
           resolve({ car: exCar });
         } else {
-          get(`cars/${id}`).then(car => resolve({ car }));
+          get(`cars/${id}`)
+            .then(
+              car => resolve({ car }),
+              err => bus.emit('alert:new', { type: 'fail', title: 'Fetching car failed', message: err, dismissable: true }));
         }
       }
     });
@@ -26,8 +30,12 @@ const carsActions = store => ({
   createCar(state, car) {
     return new Promise((resolve, reject) => {
       post('cars', { ...car })
-        .then(newCar => resolve({ car: newCar, cars: [ ...state.cars, newCar ] }));
-    });
+        .then(newCar => {
+          bus.emit('alert:new', { type: 'ok', title: 'Car created', message: `Car "${newCar.name}" created.` });
+          resolve({ car: newCar, cars: [ ...state.cars, newCar ] });
+        },
+        err => bus.emit('alert:new', { type: 'fail', title: 'Creating car failed', message: err, dismissable: true }));
+      });
   },
 
   updateCar(state, id, car) {
@@ -36,11 +44,13 @@ const carsActions = store => ({
         const carIndex = state.cars.findIndex(c => c._id === id);
         const cars = [
           ...state.cars.slice(0, carIndex),
-          updatedCar,
+          updateCar,
           ...state.cars.slice(carIndex + 1)
         ];
-        resolve({ car: updatedCar, cars });
-      });
+        bus.emit('alert:new', { type: 'ok', title: 'Car updated', message: `Car "${updateCar.name}" updated.` });
+        resolve({ car: updateCar, cars });
+      },
+      err => bus.emit('alert:new', { type: 'fail', title: 'Updating car failed', message: err, dismissable: true }));
     });
   },
 
@@ -54,14 +64,18 @@ const carsActions = store => ({
       del(`cars/${id}`).then(() => {
         store.setState({ car: null, cars });
         history.back();
+        bus.emit('alert:new', { type: 'ok', title: 'Car deleted', message: `Car deleted.` });
         resolve();
-      });
+      },
+      err => bus.emit('alert:new', { type: 'fail', title: 'Deleting car failed', message: err, dismissable: true }));
     });
   },
 
  getCars(state) {
    return new Promise((resolve, reject) => {
-     get(`cars`).then(cars => resolve({ cars }));
+     get(`cars`).then(
+      cars => resolve({ cars }),
+      err => bus.emit('alert:new', { type: 'fail', title: 'Fetching cars failed', message: err, dismissable: true }));       
    });
   }
 });

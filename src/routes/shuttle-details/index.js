@@ -37,14 +37,16 @@ export default class ShuttleDetails extends Component {
 		this.setState({ [name]: value });
 	}
 		
-	hopOn() {
+	hopOn = ev => {
+		ev.preventDefault();
 		const amount = Math.floor(+this.state.amount);
 		this.setState({ showHopOff: false, showHopOn: false, amount: 1 }, () => {
 			this.props.hopOn(amount);
 		});
 	}
 
-	hopOff() {
+	hopOff = ev => {
+		ev.preventDefault();
 		this.setState({ showHopOff: false, showHopOn: false }, () => {
 			this.props.hopOff();
 		});
@@ -62,9 +64,9 @@ export default class ShuttleDetails extends Component {
 							<div class="d-flex flex-row">
 								<h1 class="page-title">{shuttle.title}</h1>
 								{ (!shuttle.on && shuttle.taken < shuttle.max)
-									&& <button class="ml-auto btn btn-default" onClick={this.hopOnModal}><span onClick={this.hopOnModal}>Hop on</span></button> }
-								{ shuttle.on && <button class="ml-auto btn btn-default" onClick={this.hopOffModal}><span onClick={this.hopOffModal}>Hop off</span></button> }
-								{ user.isVendor && <Link class="btn btn-default ml-2" href={`/offer-details/${id}`}><span>Edit</span></Link> }
+									&& <button class="ml-auto btn btn-default" onClick={this.hopOnModal}>Hop on</button> }
+								{ shuttle.on && <button class="ml-auto btn btn-default" onClick={this.hopOffModal}>Hop off</button> }
+								{ user.isVendor && <Link class="btn btn-default ml-2" href={`/offer-details/${id}`}>Edit</Link> }
 							</div>
 							<h2 class="extra-title">Starting on {new Date(shuttle.departure).toLocaleTimeString()} at {new Date(shuttle.departure).toLocaleDateString()}</h2>
 							<h3 class="extra-title">Description</h3>
@@ -78,11 +80,9 @@ export default class ShuttleDetails extends Component {
 										<h1>Hop on</h1>
 										<p>Be part of this shuttle ride</p>
 										<form>
-											<input type="number" value={amount} name="amount" onChange={this.handleChange}/>
+											<input type="number" value={amount} name="amount" max={shuttle.max - shuttle.taken} onChange={this.handleChange}/>
 										</form>
-										<button class="btn btn-hero" onClick={() => this.hopOn()}>
-											<span onClick={() => this.hopOn()}>Hop on</span>
-										</button>
+										<button class="btn btn-hero" onClick={this.hopOn}>Hop on</button>
 									</ModalPopup>
 								</SlotContent>
 							)}
@@ -92,9 +92,7 @@ export default class ShuttleDetails extends Component {
 									<ModalPopup onClose={this.closeModal}>
 										<h1>Hop off</h1>
 										<p>Can't make it anymore? Poor you.</p>
-										<button class="btn btn-hero" onClick={() => this.hopOff()}>
-											<span onClick={() => this.hopOff()}>Hop off</span>
-										</button>
+										<button class="btn btn-hero" onClick={this.hopOff}>Hop off</button>
 									</ModalPopup>
 								</SlotContent>
 							)}

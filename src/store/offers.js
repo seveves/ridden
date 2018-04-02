@@ -1,4 +1,5 @@
 import { get, post, put, del } from '../api';
+import { bus } from '../utils';
 
 const offersActions = store => ({
   getOffers(state) {
@@ -9,13 +10,19 @@ const offersActions = store => ({
         if (!state.cars || state.cars.length === 0) {
           get(`cars`).then((cars) => {
             get(`vendors/${state.user.vendorId}/shuttles`)
-              .then((offers) => {
-                resolve({ cars, offers });
-              });
-          })
+              .then(
+                offers => resolve({ cars, offers }),
+                err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offers failed', message: err, dismissable: true })
+              );
+          },
+          err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offers failed', message: err, dismissable: true })
+          );
         } else {
           get(`vendors/${state.user.vendorId}/shuttles`)
-            .then(offers => resolve({ offers }));
+            .then(
+              offers => resolve({ offers }),
+              err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offers failed', message: err, dismissable: true })
+            );
         }
       }
     });
@@ -40,7 +47,10 @@ const offersActions = store => ({
           }
         };
         if (!state.cars || state.cars.length === 0) {
-          get(`cars`).then(cars  => resolve({ cars, offer: initOffer }));
+          get(`cars`).then(
+            cars  => resolve({ cars, offer: initOffer }),
+            err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offer failed', message: err, dismissable: true })
+          );
         } else {
           resolve({ offer: initOffer });
         }
@@ -49,17 +59,28 @@ const offersActions = store => ({
         if (offerIndex !== -1) {
           const exOffer = { ...state.offers[offerIndex] };
           if (!state.cars || state.cars.length === 0) {
-            get(`cars`).then(cars  => resolve({ offer: exOffer }));
+            get(`cars`).then(
+              cars  => resolve({ offer: exOffer }),
+              err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offer failed', message: err, dismissable: true })
+            );
           } else {
             resolve({ offer: exOffer });
           }
         } else {
           if (!state.cars || state.cars.length === 0) {
             get(`cars`).then((cars) => {
-              get(`shuttles/${id}`).then(offer => resolve({ cars, offer }));
-            });
+              get(`shuttles/${id}`).then(
+                offer => resolve({ cars, offer }),
+                err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offer failed', message: err, dismissable: true })
+              );
+            },
+            err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offer failed', message: err, dismissable: true })
+          );
           } else {
-            get(`shuttles/${id}`).then(offer => resolve({ offer }));
+            get(`shuttles/${id}`).then(
+              offer => resolve({ offer }),
+              err => bus.emit('alert:new', { type: 'fail', title: 'Fetching offer failed', message: err, dismissable: true })
+            );
           }
         }
       }
@@ -69,7 +90,13 @@ const offersActions = store => ({
   createOffer(state, offer) {
     return new Promise((resolve, reject) => {
       post('shuttles', { ...offer })
-        .then(newOffer => resolve({ offer: newOffer, offers: [ ...state.offers, newOffer ] }));
+        .then(
+          newOffer => {
+            bus.emit('alert:new', { type: 'ok', title: 'Created offer', message: `Shuttle offer "${newOffer.title}" created.` });
+            resolve({ offer: newOffer, offers: [ ...state.offers, newOffer ] });
+          },
+          err => bus.emit('alert:new', { type: 'fail', title: 'Creating offer failed', message: err, dismissable: true })
+        );
     });
   },
 
@@ -82,8 +109,11 @@ const offersActions = store => ({
           updatedOffer,
           ...state.offers.slice(offerIndex + 1)
         ];
+        bus.emit('alert:new', { type: 'ok', title: 'Updated offer', message: `Shuttle offer "${updatedOffer.title}" updated.` });
         resolve({ offer: updatedOffer, offers });
-      });
+      },
+      err => bus.emit('alert:new', { type: 'fail', title: 'Updating offer failed', message: err, dismissable: true })
+    );
     });
   },
 
@@ -97,8 +127,11 @@ const offersActions = store => ({
       del(`shuttles/${id}`).then(() => {
         store.setState({ offer: null, offers });
         history.back();
+        bus.emit('alert:new', { type: 'ok', title: 'Deleted offer', message: 'Shuttle offer deleted.' });
         resolve();
-      });
+      },
+      err => bus.emit('alert:new', { type: 'fail', title: 'Deleting offer failed', message: err, dismissable: true })
+      );
     });
   },
 });

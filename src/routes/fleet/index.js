@@ -20,7 +20,7 @@ export default class Fleet extends Component {
 			<div>
 				<div class="d-flex flex-row">
 					<h1 class="page-title">Fleet</h1>
-					<Link class="btn btn-hero ml-auto" href="/fleet-details"><span>Create</span></Link>
+					<Link class="btn btn-hero ml-auto" href="/fleet-details">Create</Link>
 				</div>
 				<div>
 					<div>
