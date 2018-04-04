@@ -78,6 +78,8 @@ export default class CreateEditCar extends Component {
 				<div class="d-flex flex-row">
 					<h1 class="page-title">{ id ? 'Car Details' : 'Create Car' }</h1>
 					<Link class="ml-auto btn btn-default" href="/fleet">Back</Link>
+					<div class="actions">
+					</div>
 				</div>
 				<form onSubmit={this.handleSubmit}>
 					<div>

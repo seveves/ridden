@@ -20,7 +20,9 @@ export default class ShuttleOffers extends Component {
 			<div>
 				<div class="d-flex flex-row">
 					<h1 class="page-title">Shuttle Offers</h1>
-					<Link class="btn btn-hero ml-auto" href="/offer-details">Create</Link>
+					<div class="actions">
+						<Link class="btn btn-hero" href="/offer-details">Create</Link>
+					</div>
 				</div>
 				<OffersList offers={offers}></OffersList>
 			</div>

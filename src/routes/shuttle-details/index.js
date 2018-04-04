@@ -3,6 +3,7 @@ import { Link } from 'preact-router/match';
 import { SlotContent } from 'preact-slots';
 import { connect } from 'unistore/preact';
 import { actions } from '../../store';
+import { saveIcs } from '../../api';
 
 import ModalPopup from '../../components/modal-popup';
 
@@ -13,6 +14,10 @@ export default class ShuttleDetails extends Component {
 		showHopOff: false,
 		showHopOn: false,
 		amount: 1
+	};
+
+	getIcs = ev => {
+		saveIcs(this.props.id)
 	};
 
 	hopOnModal = ev => {
@@ -63,10 +68,13 @@ export default class ShuttleDetails extends Component {
 					?	<div>
 							<div class="d-flex flex-row">
 								<h1 class="page-title">{shuttle.title}</h1>
-								{ (!shuttle.on && shuttle.taken < shuttle.max)
-									&& <button class="ml-auto btn btn-default" onClick={this.hopOnModal}>Hop on</button> }
-								{ shuttle.on && <button class="ml-auto btn btn-default" onClick={this.hopOffModal}>Hop off</button> }
-								{ user.isVendor && <Link class="btn btn-default ml-2" href={`/offer-details/${id}`}>Edit</Link> }
+								<div class="actions">
+									{ shuttle.on && <button class="btn btn-default" onClick={this.getIcs}>iCal</button> }
+									{ (!shuttle.on && shuttle.taken < shuttle.max)
+										&& <button class="btn btn-default" onClick={this.hopOnModal}>Hop on</button> }
+									{ shuttle.on && <button class="btn btn-default" onClick={this.hopOffModal}>Hop off</button> }
+									{ user.isVendor && <Link class="btn btn-default" href={`/offer-details/${id}`}>Edit</Link> }
+								</div>
 							</div>
 							<h2 class="extra-title">Starting on {new Date(shuttle.departure).toLocaleTimeString()} at {new Date(shuttle.departure).toLocaleDateString()}</h2>
 							<h3 class="extra-title">Description</h3>

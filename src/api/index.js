@@ -1,6 +1,8 @@
 import fetch from 'unfetch';
 import jwtDecode from 'jwt-decode';
+import filesaver from 'file-saver';
 import { login as _login, logout as _logout, headers } from './auth';
+import { getToken } from '../utils/local';
 
 const API = API_URL;
 
@@ -35,6 +37,21 @@ export function login(token) {
 	return fetch(`${API}/riders/${decoded.data.id}`, opts)
 		.then(handle)
 		.then(rider => _login(token, rider));
+}
+
+export function saveIcs(id) {
+	const token = getToken();
+	const opts = {
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	};
+	return fetch(`${API}/shuttles/${id}/ical`, opts)
+		.then(res => res.text())
+		.then(icsText => {
+			const blob = new Blob([icsText], {type: "text/calendar;charset=utf-8"});
+			filesaver.saveAs(blob, `${id}.ics`);
+		});
 }
 
 export function logout() {

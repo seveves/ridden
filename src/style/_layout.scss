@@ -8,12 +8,51 @@ body, html {
 	margin-top: 80px;
 	margin-left: 1rem;
 	margin-right: 1rem;
+	padding-bottom: 60px;
 }
 
-@media(min-width: $bp-sm) {
+.actions {
+	position: fixed;
+	height: 45px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	z-index: 50;
+	display: flex;
+	flex-direction: row;
+	background-color: white;
+
+	.btn {
+		margin-left: 0px;
+		border-right: 1px solid $rdn-green;
+		width: 100%;
+
+		&:last-child {
+			border-right: none;
+		}
+	}
+}
+
+@media(min-width: $bp-l) {
 	.container {
 		margin-left: 3rem;
 		margin-right: 3rem;
+	}
+
+	.actions {
+		position: relative;
+		z-index: 0;
+		display: flex;
+		flex-direction: row;
+		margin-left: auto;
+		background-color: transparent;
+	
+		.btn {
+			margin-left: 1rem;
+			border-right: none;
+		  width: 150px;
+		}
+
 	}
 }
 

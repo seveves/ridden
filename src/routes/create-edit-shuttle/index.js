@@ -127,6 +127,8 @@ export default class CreateEditShuttleOffer extends Component {
 				<div class="d-flex flex-row">
 					<h1 class="page-title">{ id ? 'Shuttle Offer Details' : 'Create Shuttle Offer' }</h1>
 					<Link class="ml-auto btn btn-default" href="/offers">Back</Link>
+					<div class="actions">
+					</div>
 				</div>
 				<form onSubmit={this.handleSubmit}>
 					<div>
