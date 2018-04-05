@@ -61,13 +61,14 @@ export default class ShuttleDetails extends Component {
 		this.props.getShuttle(this.props.id);
 	}
 
-	render({ id, user, shuttle, getShuttle, hopOn, hopOff }, { showHopOff, showHopOn, amount }) {
+	render({ id, user, shuttle, getShuttle, hopOn, hopOff, backTo }, { showHopOff, showHopOn, amount }) {
 		return (
 			<div>
 				{ shuttle
 					?	<div>
 							<div class="d-flex flex-row">
 								<h1 class="page-title">{shuttle.title}</h1>
+								<Link class="ml-auto btn btn-default" href={backTo}>Back</Link>
 								<div class="actions">
 									{ shuttle.on && <button class="btn btn-default" onClick={this.getIcs}>iCal</button> }
 									{ (!shuttle.on && shuttle.taken < shuttle.max)

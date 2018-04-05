@@ -53,7 +53,8 @@ export default class App extends Component {
 						<Router onChange={this.handleRoute}>
 							<Home path="/" />
 							<Bookings path="/bookings" user={user} />
-							<ShuttleDetails path="/shuttle-details/:id" user={user} />
+							<ShuttleDetails path="/shuttle-details/:id" backTo="/" user={user} />
+							<ShuttleDetails path="/bookings/:id" backTo="/bookings" user={user} />
 							<ShuttleOffers path="/offers" user={user} />
 							<CreateEditShuttle path="/offer-details/:id?" user={user} />
 							<Fleet path="/fleet" user={user} />

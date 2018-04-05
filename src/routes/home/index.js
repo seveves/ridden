@@ -10,14 +10,16 @@ export default class Home extends Component {
 
 	state = {
 		shuttles: null,
-		distance: 100,
+		distance: 0,
 		lat: 48.596603,
 		lon: 9.414554,
 		geo: false
 	};
 
 	getShuttles() {
-		const param = this.state.geo ? `?near=${this.state.distance}:${this.state.lat}:${this.state.lon}` : '';
+		const param = this.state.geo && this.state.distance > 0
+			? `?near=${this.state.distance}:${this.state.lat}:${this.state.lon}`
+			: '';
 		this.props.getShuttles(param);
 	}
 

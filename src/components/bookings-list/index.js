@@ -10,7 +10,7 @@ export const BookingsList = ({ bookings }) => (
 					{
 						bookings.map((booking) => (
 							<li>
-								<Link href={`/shuttle-details/${booking._id}`}>
+								<Link href={`/bookings/${booking._id}`}>
 									<div class="list-group">
 										<div class="list-label toe">{booking.title}</div>
 										<div class="list-text toe">{booking.description}</div>
