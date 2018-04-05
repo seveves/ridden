@@ -1,14 +1,28 @@
 import fetch from 'unfetch';
 import jwtDecode from 'jwt-decode';
 import filesaver from 'file-saver';
+import { route } from 'preact-router';
 import { login as _login, logout as _logout, headers } from './auth';
+import { bus } from '../utils';
 import { getToken } from '../utils/local';
+import { store } from '../store';
 
 const API = API_URL;
 
 function handle(r) {
 	let act = r.ok ? 'resolve' : 'reject';
-	return r.json().then(data => Promise[act](data));
+	return r.json().then(data => {
+		if (data.error) {
+			if (data.error.name === 'JsonWebTokenError' || data.error.name === 'NoAuthorizationHeader') {
+				bus.emit('alert:new', { type: 'fail', title: 'Session expired', message: 'Please login again.', dismissable: true });
+				return logout().then(() => {
+					store.setState({ user: null });
+					route('/login', true);
+				});
+			}
+		}
+		return Promise[act](data);
+	});
 }
 
 function send(method, uri, data, opts) {
@@ -50,7 +64,7 @@ export function saveIcs(id) {
 		.then(res => res.text())
 		.then(icsText => {
 			const blob = new Blob([icsText], {type: "text/calendar;charset=utf-8"});
-			filesaver.saveAs(blob, `${id}.ics`);
+			filesaver.saveAs(blob, `${id}.ics`, true);
 		});
 }
 

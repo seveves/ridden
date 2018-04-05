@@ -2,6 +2,31 @@ a.btn {
   line-height: 45px;
 }
 
+.btn {
+  display: inline-block;
+  border: none;
+  text-align: center;
+  line-height: 1.5;
+  width: 150px;
+  max-height: 45px;
+  height: 45px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color .3s;
+}
+
 .btn-hero {
   background: $rdn-grad;
   color: white;
@@ -29,27 +54,12 @@ a.btn {
   }
 }
 
-.btn {
-  display: inline-block;
-  border: none;
-  text-align: center;
-  line-height: 1.5;
-  width: 150px;
-  max-height: 45px;
-  height: 45px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: none;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  transition: color .3s;
+.btn-circle {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+
+  svg {
+    margin-top: 10px;
+  }
 }
