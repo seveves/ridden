@@ -8,6 +8,7 @@ import { actions } from '../store';
 
 import Header from './header';
 import AlertToaster from './alert-toaster';
+import LoadIndicator from './load-indicator';
 
 import Home from '../routes/home';
 import Bookings from '../routes/bookings';
@@ -48,6 +49,7 @@ export default class App extends Component {
 				<div id="app">
 					<Slot name="modal"></Slot>
 					<Header user={user} logout={logout} />
+					<LoadIndicator />
 					<AlertToaster />
 					<div class="container">
 						<Router onChange={this.handleRoute}>

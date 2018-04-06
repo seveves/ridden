@@ -8,10 +8,14 @@ import { getToken } from '../utils/local';
 import { store } from '../store';
 
 const API = API_URL;
+let counter = 0;
 
 function handle(r) {
 	let act = r.ok ? 'resolve' : 'reject';
 	return r.json().then(data => {
+		if (!--counter) {
+			bus.emit('network:loadend');
+		}
 		if (data.error) {
 			if (data.error.name === 'JsonWebTokenError' || data.error.name === 'NoAuthorizationHeader') {
 				bus.emit('alert:new', { type: 'fail', title: 'Session expired', message: 'Please login again.', dismissable: true });
@@ -26,6 +30,9 @@ function handle(r) {
 }
 
 function send(method, uri, data, opts) {
+	if (!counter++) {
+		bus.emit('network:loadstart');
+	}
 	opts = opts || {};
 	opts.method = method;
 	opts.headers = headers(opts || {});
@@ -40,6 +47,9 @@ export const post = send.bind(null, 'post');
 export const del = send.bind(null, 'delete');
 
 export function login(token) {
+	if (!counter++) {
+		bus.emit('network:loadstart');
+	}
 	const decoded = jwtDecode(token);
 	const opts = {
 		headers: {
