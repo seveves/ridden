@@ -12,10 +12,10 @@ let counter = 0;
 
 function handle(r) {
 	let act = r.ok ? 'resolve' : 'reject';
+	if (!--counter) {
+		bus.emit('network:loadend');
+	}
 	return r.json().then(data => {
-		if (!--counter) {
-			bus.emit('network:loadend');
-		}
 		if (data.error) {
 			if (data.error.name === 'JsonWebTokenError' || data.error.name === 'NoAuthorizationHeader') {
 				bus.emit('alert:new', { type: 'fail', title: 'Session expired', message: 'Please login again.', dismissable: true });
@@ -37,7 +37,14 @@ function send(method, uri, data, opts) {
 	opts.method = method;
 	opts.headers = headers(opts || {});
 	data && (opts.body = JSON.stringify(data));
-	return fetch(`${API}/${uri}`, opts).then(handle);
+	return fetch(`${API}/${uri}`, opts)
+		.then(handle)
+		.catch(err => {
+			if (!--counter) {
+				bus.emit('network:loadend');
+			}
+			return Promise.reject(err);
+		});
 }
 
 export const get = send.bind(null, 'get');

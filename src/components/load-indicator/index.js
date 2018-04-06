@@ -9,11 +9,9 @@ export default class LoadIndicator extends Component {
 
   componentDidMount() {
     bus.on('network:loadstart', () => {
-      console.log('network start');
       !this.state.showProgress && this.setState({ showProgress: true });
     });
     bus.on('network:loadend', () => {
-      console.log('network end');
       this.state.showProgress && this.setState({ showProgress: false });
     });
   }

@@ -11,6 +11,12 @@
     box-shadow: $rdn-box-shadow;
     margin-bottom: .5rem;
     position: relative;
+    opacity: 0;
+    transition: opacity .5s;
+
+    &.active {
+      opacity: 1;
+    }
 
     .alert-close {
       position: absolute;
